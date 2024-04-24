@@ -129,7 +129,7 @@ const WizardHeaderRight: React.FC = () => {
             <img src="/logo-white.svg" alt="logo" />
           </a>
         </div>
-        <div className={styles.featureName}>智能检索</div>
+        <div className={styles.featureName}>installer</div>
       </Space>
 
       <Space className={styles.rightContent}>

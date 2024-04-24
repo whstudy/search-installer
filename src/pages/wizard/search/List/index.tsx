@@ -9,7 +9,8 @@ import {
   DatePicker,
   Select,
   Modal,
-  Tooltip
+  Tooltip,
+  Radio
 } from 'antd';
 import { FormattedMessage } from 'umi';
 import React, { useRef, useState, useEffect } from 'react';
@@ -224,245 +225,51 @@ const SearchList = (props) => {
         className={styles.searchListTop}
         title={
           <div className={styles.demoTitleDiv}>
-            对象检索
-            <Tooltip title={
-              <div className={styles.searchTooltip}>
-                <div>查询模式</div>
-                <div className={styles.content}><div>■</div> 完全匹配：文本关键词和搜索关键字一致</div>
-                <div className={styles.content}><div>■</div> 分词匹配：对文本进行分词处理并基于分词结果进行查询</div>
-                <div className={styles.content}><div>■</div> 前缀匹配：支持前缀模糊搜索</div>
-                <div className={styles.content}><div>■</div> 后缀匹配：支持后缀模糊搜索</div>
-              </div>
-            } placement="rightBottom">
-              <InfoCircleOutlined className="term-explan-icon" />
-            </Tooltip>
+            首先，添加检索服务节点
           </div>
         }
       >
         <div>
           <Space className={styles.searchForm}>
             <Form
+              layout={"vertical"}
               onFinish={onFinish}
               form={form}
             >
-              <Form.Item label={'所属桶'} name={'bucket'}>
-                <Select
+              <Form.Item label={'部署配置'} name={'bucket'}>
+                <Radio.Group
                   size={'middle'}
-                  mode="multiple"
-                  allowClear
                   style={{ width: '100%' }}
-                  placeholder="请选择所属桶"
-                  // defaultValue={['a10', 'c12']}
-                  onChange={handleChange}
-                  options={bucketList}
+                  defaultValue={1}
+                  options={[
+                    {value: 1, label: `推荐`},
+                    {value: 2, label: `简单`},
+                  ]}
                 />
               </Form.Item>
-  
-              <Space>
-                <Form.Item label={'对象名称'} name={'name'}>
-                  <Input/>
-                </Form.Item>
-                <Form.Item label={'对象大小'}>
-                  <Input.Group compact>
-                    <Form.Item name={'size_operator'} style={{marginBottom: 0}}>
-                      <Select placeholder={'请选择'}>
-                        <Option value="gt">大于</Option>
-                        <Option value="lte">小于等于</Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item name={'size'} style={{marginBottom: 0}}>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item name={'unit'} initialValue={1} style={{marginBottom: 0}}>
-                      <Select options={unitOptions}/>
-                    </Form.Item>
-                  </Input.Group>
-                </Form.Item>
-                <Form.Item label={'创建时间'} name={'time'}>
-                  <RangePicker showTime={true}/>
-                </Form.Item>
-              </Space>
 
-              <Form.Item label="标签" name="tags">
-                <Form.List name="tags">
-                  {(tagsFields, tagsOpt) => (
-                    <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
-                      {tagsFields.map((tagsField) => (
-                        <Space key={tagsField.key}>
-                          <Form.Item noStyle name={[tagsField.name, 'key']}>
-                            <Input placeholder="键" />
-                          </Form.Item>
-                          <Form.Item noStyle name={[tagsField.name, 'value']}>
-                            <Input placeholder="值" />
-                          </Form.Item>
-                          <Button onClick={() => {
-                            tagsOpt.remove(tagsField.name);
-                          }}>删除</Button>
-                        </Space>
-                      ))}
-                      <Space>
-                        <Button style={{width: '100px'}} onClick={() => tagsOpt.add()} block>
-                          添加
-                        </Button>
-                        <Select
-                          defaultValue={'jack'}  
-                          options={[
-                          { value: 'jack', label: '分词匹配' },
-                          { value: 'lucy', label: 'Lucy' },
-                          { value: 'Yiminghe', label: 'yiminghe' },
-                          { value: 'disabled', label: 'Disabled', disabled: true },
-                        ]}/>
-                        <Select
-                          defaultValue={'jack'}
-                          options={[
-                          { value: 'jack', label: '或' },
-                          { value: 'lucy', label: 'Lucy' },
-                          { value: 'Yiminghe', label: 'yiminghe' },
-                          { value: 'disabled', label: 'Disabled', disabled: true },
-                        ]}/>
-                      </Space>
-                    </div>
-                  )}
-                </Form.List>
+              <Form.Item label={'节点IP'} name={'节点IP'}>
+                <Input.TextArea rows={4}/>
+              </Form.Item>
+
+              <Form.Item label={'用户名'} name={'用户名'}>
+                <Input/>
+              </Form.Item>
+
+              <Form.Item label={'密码'} name={'密码'}>
+                <Input/>
               </Form.Item>
               
               <Space className={styles.btnGroup}>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
-                    检索
-                  </Button>
-                </Form.Item>
-  
-                <Form.Item>
-                  <Button onClick={onReset}>
-                    重置
+                    下一步
                   </Button>
                 </Form.Item>
               </Space>
             </Form>
           </Space>
         </div>
-      </ProCard>
-
-      <ProCard title={''} className={styles.table}>
-        <Space className={styles.searchForm}>
-        <Button htmlType="submit" onClick={objDownLoad}>
-          批量下载
-        </Button>
-      </Space>
-        <Table
-          showSorterTooltip={false}
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
-          columns={[
-            {
-              title: '对象名称',
-              dataIndex: 'name',
-              key: 'name',
-              sorter: true,
-              sortDirections: ['descend', 'ascend'],
-              render: (text, record) => (
-                <div className={styles.tableNameTitle}>
-                  <span title={record.name} className={styles.gatewaysNameSpan}>
-                    {record.name}
-                  </span>
-                </div>
-              ),
-            },
-            {
-              title: <FormattedMessage id="component.tableTitle.operation" defaultMessage="操作" />,
-              key: 'operation',
-              render: (text, record) => (
-                <Space size="middle">
-                  <a
-                    // href={`/dsm/object/download/?name=${record.name}&bucket=${record.bucket}&owner=${record.owner}`}
-                    onClick={(e: any) => {
-                      e.stopPropagation();
-                      e.record = [record]
-                      objDownLoad(e);
-                    }}
-                  >
-                    下载
-                  </a>
-                  <a
-                    onClick={() => {
-                      shareObj(record);
-                    }}
-                  >
-                    分享
-                  </a>
-                </Space>
-              ),
-            },
-            {
-              title: '大小',
-              dataIndex: 'size',
-              key: 'size',
-              sorter: true,
-              sortDirections: ['descend', 'ascend'],
-              render: (text, record) => (
-                <div className={styles.tableNameTitle}>
-                  {formatUnit(record.size)}
-                </div>
-              ),
-            },
-            {
-              title: '租户名',
-              dataIndex: 'owner',
-              key: 'owner',
-              sortDirections: ['descend', 'ascend'],
-              render: (text, record) => {
-                const ownerName = text.split('$').length == 2 ? text.split('$')[0] : 'N/A'
-                return (<div className={styles.tableNameTitle}>
-                  <span title={ownerName} className={styles.gatewaysNameSpan}>
-                    {ownerName}
-                  </span>
-                </div>)
-              },
-            },
-            {
-              title: '用户名',
-              dataIndex: 'owner',
-              key: 'owner',
-              sorter: true,
-              sortDirections: ['descend', 'ascend'],
-              render: (text, record) => {
-                const ownerName = text.split('$').length == 2 ? text.split('$')[1] : text
-                return (<div className={styles.tableNameTitle}>
-                  <span title={ownerName} className={styles.gatewaysNameSpan}>
-                    {ownerName}
-                  </span>
-                </div>)
-              },
-            },
-            {
-              title: '所属桶',
-              dataIndex: 'bucket',
-              key: 'bucket',
-              sorter: true,
-              sortDirections: ['descend', 'ascend'],
-            },
-            {
-              title: <FormattedMessage id="storage.gateways.createTime" defaultMessage="创建时间" />,
-              dataIndex: 'create_time',
-              key: 'create_time',
-              sorter: true,
-              renderText: (val: number) => `${moment(val).format('YYYY-MM-DD HH:mm:ss')}`,
-            },
-          ]}
-          pagination={{
-            pageSize: 10,
-            total: total,
-            current: current,
-          }}
-          scroll={{ x: 1500 }}
-          actionRef={ref}
-          dataSource={dataSource}
-          rowKey="id"
-          onChange={onChange}
-        />
       </ProCard>
       <Modal
         centered
