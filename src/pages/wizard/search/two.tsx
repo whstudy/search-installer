@@ -228,10 +228,12 @@ const SearchList = (props) => {
           </div>
         }
       >
-        <div className={styles.formItemContainer}>
-          <div className={styles.formItemTitle}>
-            1.1.1.1
-          </div>
+        <div className={styles.nodeContainer}>
+          {[1,2,3,4,5].map((o)=><div key={o} className={styles.formItemContainer}>
+            <div className={styles.formItemTitle}>
+              1.1.1.1
+            </div>
+          </div>)}
         </div>
       </ProCard>
     </>
