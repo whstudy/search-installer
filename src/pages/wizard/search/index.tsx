@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SearchList from './List';
+import SearchList from './two';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {Tooltip} from "antd";
