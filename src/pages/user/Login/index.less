@@ -1,0 +1,152 @@
+@import '~antd/es/style/themes/default.less';
+
+.fromDeploy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  font-weight: bolder;
+  font-size: 18px;
+  .text {
+    margin-top: 18px;
+  }
+}
+
+.lenovo {
+  width: 118px;
+  height: 36px;
+  margin-bottom: 30px;
+  padding: 7px 11px;
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background: @layout-body-background;
+}
+
+.footer {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.lang {
+  width: 100%;
+  height: 40px;
+  color: rgb(167, 168, 171);
+  line-height: 44px;
+  text-align: right;
+  :global(.ant-dropdown-trigger) {
+    margin-right: 24px;
+  }
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+@media (min-width: @screen-md-min) {
+  .container {
+    margin-left: -2px;
+    background-image: url('/login-bgimg.jpg');
+    background-repeat: no-repeat;
+    background-size: 101% calc(~'101%');
+  }
+
+  .content {
+    padding: 32px 0 24px;
+  }
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: left;
+  width: 304px;
+  line-height: 44px;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.logo {
+  height: 50px;
+}
+
+.title {
+  position: relative;
+  top: 2px;
+  color: @heading-color;
+  font-weight: 600;
+  font-size: 33px;
+  font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+.desc {
+  margin-top: 12px;
+  margin-bottom: 40px;
+  color: @text-color-secondary;
+  font-size: @font-size-base;
+}
+
+.main {
+  width: 304px;
+  margin: 0 auto;
+  margin-bottom: 125px;
+
+  @media screen and (max-width: @screen-sm) {
+    width: 95%;
+    max-width: 328px;
+  }
+
+  :global {
+    .@{ant-prefix}-tabs-nav-list {
+      margin: auto;
+      font-size: 16px;
+    }
+  }
+
+  .icon {
+    margin-left: 16px;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  .other {
+    margin-top: 24px;
+    line-height: 22px;
+    text-align: left;
+
+    .register {
+      float: right;
+    }
+  }
+
+  .prefixIcon {
+    color: @primary-color;
+    font-size: @font-size-base;
+  }
+}

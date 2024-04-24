@@ -1,0 +1,463 @@
+@import '~antd/es/style/themes/default.less';
+
+@defaultColor: #2a68bf;
+@whiteColor: #fff;
+@bgColor: #f6f7fb;
+@alertColor: #f2af00;
+@warningColor: #ce1126;
+@useColor: rgba(176, 183, 200, 0.4);
+@titleColor: rgba(0, 0, 0, 0.85);
+@textColor: rgba(0, 0, 0, 0.65);
+
+.searchForm {
+  margin-bottom: 10px;
+  .btnGroup {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: -36px;
+  }
+}
+
+.textRed {
+  color: red;
+  font-weight: bolder;
+  vertical-align: center;
+}
+
+.shareContainer {
+  display: flex;
+}
+
+.shareLabel {
+  display: inline-block;
+  font-weight: bolder;
+  margin-right: 10px;
+  width: 53px;
+  flex-shrink: 0;
+}
+
+.shareContent {
+  display: inline-block;
+  .shareInput {
+    width: 100px;
+    margin-right: 6px;
+  }
+  .shareLink {
+    word-break: break-all;
+    min-height: 100px;
+    width: 409px;
+  }
+  :global {
+    .ant-typography {
+      position: relative;
+      width: 100px;
+      margin-top: 12px;
+      color: #2a68bf;
+      text-align: center;
+      border: 1px solid #2a68bf;
+      border-radius: 2px;
+      margin-left: auto;
+      .ant-typography-copy {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.gateway-router-page {
+  :global {
+    .ant-form-item-label {
+      margin: 0;
+    }
+
+    .ant-form-item {
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.flexCenterY {
+  display: flex;
+  align-items: center;
+}
+
+.clusterStorageItem {
+  margin-top: 0;
+  .storageItemHeader {
+    align-items: center;
+    height: 40px;
+    padding: 0 10px;
+    background: rgba(234, 234, 234, 0.4);
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+  }
+  .storageItemHeaderText {
+    padding-left: 15px;
+  }
+  .storageListItem {
+    align-items: center;
+    height: 40px;
+    padding: 0 10px;
+    .selectDropdownStyle {
+      position: absolute !important;
+      top: 120px;
+      left: -50% !important;
+      width: 210% !important;
+    }
+    :global {
+      .ant-form-item {
+        margin: 0;
+        .ant-form-item-explain {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.gateways {
+  :global {
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list,
+    .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-list {
+      justify-content: space-around;
+      width: 100% !important;
+      background: @whiteColor;
+    }
+    .ant-affix {
+      top: 0 !important;
+    }
+    .ant-row {
+      line-height: 2.5 !important;
+    }
+    .ant-drawer-body {
+      padding: 0;
+      background: @bgColor;
+    }
+    .ant-card {
+      margin-bottom: 16px;
+    }
+  }
+}
+// .gatewaysTitle {
+//   :global {
+//     .ant-statistic-content-value {
+//       &:hover {
+//         cursor: pointer;
+//       }
+//     }
+//   }
+// }
+.container {
+  :global {
+    .ant-statistic {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+  .gatewaysNameBtn {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    :global {
+      .anticon {
+        margin-top: 4px;
+        font-size: 1.2rem !important;
+      }
+    }
+    .gatewaysNameSpan {
+      width: 150px;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+  }
+  // .pageTitle {
+  //   margin: 20px 0 0 20px;
+  //   font-weight: 900;
+  //   font-size: 20px;
+  // }
+  .filterStyle {
+    padding: 11px 15px;
+    background: rgba(0, 0, 0, 0.1);
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+    }
+  }
+  .showFilter {
+    display: none;
+  }
+}
+.closeDrawer {
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  &:hover {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+// .containerBox {
+//   margin: 10px 16px;
+// }
+.previewCard {
+  // .previewTitle {
+  //   color: @titleColor;
+  //   font-weight: 900;
+  // }
+  .tipsCard {
+    height: 72px;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border: solid 1px rgba(0, 0, 0, 0.15);
+    border-left: solid 4px @error-color;
+    & > div {
+      margin-left: 13px;
+    }
+    .tipImg {
+      display: flex;
+      align-items: center;
+      :global {
+        .anticon {
+          font-size: 18px !important;
+        }
+      }
+      svg {
+        margin-right: 5px;
+        vertical-align: sub;
+      }
+    }
+    .tipTime {
+      margin-top: 5px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+  .health {
+    text-align: center;
+    > div {
+      margin-top: 5px;
+      color: rgba(0, 0, 0, 0.45);
+      font-weight: 600;
+    }
+  }
+  .detailTitle {
+    color: @textColor;
+  }
+}
+
+.containerProgress {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  background-color: @useColor;
+  .progressTarget {
+    position: absolute;
+    bottom: -9px;
+    width: 2px;
+    height: 40px;
+    // padding: 0 10px;
+    cursor: pointer;
+    &::after {
+      display: block;
+      width: 2px;
+      height: 100%;
+      background: @alertColor;
+      content: '';
+    }
+  }
+  &.listProgress {
+    height: 15px;
+    .progressTarget {
+      bottom: -4px;
+      height: 23px;
+    }
+  }
+}
+
+.progressTooltip {
+  display: flex;
+  align-items: center;
+}
+.defaultColor {
+  background: @defaultColor;
+}
+.alertColor {
+  max-width: 100%;
+  background: @alertColor;
+  cursor: pointer;
+}
+.warningColor {
+  max-width: 100%;
+  background: @warningColor;
+  cursor: pointer;
+}
+.statusIcon {
+  margin-right: 8px !important;
+  transform: scale(1.3) !important;
+}
+.greyColor {
+  background: @useColor;
+}
+.writeColor {
+  background-color: #369395;
+}
+.recoveryColor {
+  background-color: #003b67;
+}
+.capacityText {
+  margin-bottom: 10px;
+  > div {
+    display: inline-block;
+    width: 130px;
+  }
+  .inlineBlock {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+}
+.echartsLegend {
+  display: flex;
+  .echartsLegendItems {
+    min-width: 74px;
+    text-align: center;
+    cursor: pointer;
+    .legendNum {
+      color: @titleColor;
+      font-weight: 900;
+    }
+    .legendText {
+      color: @textColor;
+      > span {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  :global {
+    .ant-dropdown-trigger {
+      cursor: pointer;
+    }
+  }
+}
+// 新建
+.newGateways {
+  :global {
+    .ant-select-selector {
+      height: auto !important;
+      max-height: 66px;
+    }
+    table th.ant-table-cell {
+      text-transform: none;
+    }
+  }
+  .tipColor {
+    color: #2a68bf !important;
+  }
+}
+.createQuotaItem {
+  :global {
+    .ant-input-group-compact {
+      display: flex !important;
+      .ant-input-number {
+        flex: 1;
+      }
+    }
+  }
+}
+.newGatewaysResource {
+  .newGatewaystitle {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+  }
+  .newGatewaysnum {
+    color: rgba(0, 0, 0, 0.45);
+  }
+}
+
+.quotaEditStyle {
+  .notSet {
+    color: rgb(184, 184, 184);
+  }
+  :global {
+    .ant-space-align-center {
+      align-items: baseline;
+      .ant-form-item-control-input {
+        height: 30px;
+        min-height: auto;
+        .ant-form-item-control-input-content {
+          line-height: 30px !important;
+          .ant-select-in-form-item {
+            width: auto !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.gatewaysCapacityUnit {
+  :global {
+    .common-capacity-value {
+      height: 32px;
+      font-weight: bold;
+      line-height: 32px;
+    }
+  }
+}
+
+.tableNameTitle {
+  display: flex;
+  align-items: center;
+  .tableNameTitleIcon {
+    margin-right: 10px;
+  }
+}
+
+.allSelect {
+  width: 100%;
+  padding: 10px;
+}
+.nodeListOpts {
+  display: flex;
+  .nodeListOptsIp {
+    margin-left: 10px;
+    color: #8c8c8c;
+  }
+}
+
+.demoTitleDiv {
+  display: flex;
+  font-weight: bolder;
+  font-size: 20px;
+  align-items: center;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.searchListTop {
+  margin-bottom: 20px !important;
+  box-shadow: 0px 2px 2px 0px #323D5926;
+}
+
+.searchTooltip {
+  div {
+    margin-bottom: 10px;
+  }
+  .content {
+    display: flex;
+    div {
+      margin-right: 10px;
+    }
+  }
+}

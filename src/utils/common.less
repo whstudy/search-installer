@@ -1,0 +1,316 @@
+.bg-white {
+  background: #fff;
+}
+
+span.anticon {
+  &.error {
+    color: #ce1126;
+  }
+
+  &.warning {
+    color: #f2af00;
+  }
+
+  &.health {
+    color: #2a68bf;
+  }
+
+  &.disabled {
+    color: rgba(0, 0, 0, 0.25);
+  }
+}
+
+// 控制表单 label/组名 大写
+form {
+  label,
+  label > .ant-row,
+  .ant-pro-form-group-title > .ant-row {
+    // text-transform: capitalize;
+  }
+}
+
+// 控制table 列头、操作等短词首字母大写
+table {
+  th.ant-table-cell {
+    // text-transform: capitalize;
+
+    .ant-row {
+      text-transform: capitalize;
+    }
+  }
+
+  .actions {
+    * {
+      text-transform: capitalize;
+    }
+  }
+}
+
+@row-gap: 16px;
+
+// 控制菜单内容页头部 统计内容样式
+.common-page-header-statistic {
+  box-sizing: content-box;
+  margin-bottom: @row-gap !important;
+  padding-bottom: 24px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  .ant-statistic {
+    padding-left: 10px;
+    border-left: 1px solid #f0f0f0;
+
+    .ant-statistic-content {
+      padding-bottom: 8px;
+      line-height: 18px;
+
+      .ant-statistic-content-value {
+        font-weight: bold;
+        font-size: 20px;
+        cursor: pointer;
+
+        .ant-typography {
+          line-height: 1;
+
+          strong {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .ant-statistic-title {
+      margin: 0;
+      color: rgba(0, 0, 0, 0.65);
+      font-weight: normal;
+
+      .ant-row {
+        margin: 0;
+      }
+    }
+  }
+
+  .ant-pro-card-divider,
+  .ant-divider {
+    display: none;
+  }
+
+  .ant-pro-card-body {
+    padding: 0 @row-gap;
+  }
+
+  .ant-pro-card .ant-pro-card-body {
+    padding: 0;
+  }
+}
+
+.common-page-title {
+  height: 24px;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: capitalize;
+}
+
+// 管理页面布局
+// 根据已有界面推荐布局，所有间隔都排布好了
+// <ProCard title={title}>
+//  <ProCard.Group>
+//   <ProCard>
+//    <Statistics />
+//   </ProCard>
+//  </ProCard.Group>
+//  <Row>
+//   <Col>function button</Col>
+//   <Col>search input</Col>
+//   <Col span={24}><Protable /></Col> // search放在table的toolbar属性里都ok
+//  </Row>
+// </ProCard>
+.common-page {
+  padding: @row-gap !important;
+
+  & > .ant-pro-card-header {
+    margin-bottom: @row-gap;
+    padding: 0;
+
+    .ant-row {
+      margin: 0;
+    }
+  }
+
+  & > .ant-pro-card-body {
+    margin: 0 !important;
+    padding: 0;
+
+    // 在循环结构中row被排除了间隔，末位col也是，不用担心使用循环结构，可根据需要复用如下结构Row > Col > Row >  ...
+    .ant-row {
+      margin: 0 0 @row-gap;
+
+      .common-page-header-statistic {
+        margin-bottom: 0 !important;
+      }
+
+      & > .ant-col-24:not(.ant-col-24:last-child) {
+        margin: 0 0 @row-gap;
+
+        .common-page-header-statistic {
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+
+    table .ant-row:last-child,
+    .ant-col > .ant-row:last-child {
+      margin: 0 0 0;
+    }
+
+    .ant-col {
+      .ant-typography {
+        line-height: 24px;
+      }
+    }
+
+    // 处理界面为tab结构
+    & > .ant-tabs {
+      .ant-tabs-nav[role='tablist'] {
+        margin: 0 0 @row-gap !important;
+        padding: 0 !important;
+
+        .ant-tabs-tab {
+          padding: 0 0 @row-gap;
+        }
+      }
+    }
+  }
+
+  .ant-pro-table .ant-card > .ant-card-body {
+    padding: 0;
+
+    // table 工具栏间隔
+    .ant-pro-table-list-toolbar {
+      padding: 0 0 @row-gap;
+
+      .ant-pro-table-list-toolbar-container {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.first-detail-text {
+  color: rgba(0, 0, 0, 0.85);
+  // font-size: 14px;
+  line-height: 24px;
+}
+
+.second-detail-text {
+  .first-detail-text;
+
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.tertiary-detail-text {
+  .first-detail-text;
+
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.row-col-division {
+  margin: 0 0 @row-gap;
+  padding: 0 !important;
+  line-height: 24px;
+
+  .ant-col {
+    margin: 0 0 @row-gap;
+
+    &[class*='ant-col-'] {
+      &:not(.ant-col-24) {
+        margin-bottom: 0;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .ant-row:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+.detail-card-unit {
+  margin-bottom: @row-gap !important;
+  padding: @row-gap !important;
+
+  & > .ant-pro-card-header {
+    margin-bottom: @row-gap;
+    padding: 0;
+
+    .ant-pro-card-title {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 24px;
+      // text-transform: capitalize;
+    }
+  }
+
+  &.header-notransform .ant-pro-card-header {
+    .ant-pro-card-title {
+      text-transform: none;
+    }
+  }
+
+  & > .ant-pro-card-body {
+    padding: 0;
+
+    // 防止ant-row被实时计算
+    .ant-row {
+      .row-col-division;
+    }
+  }
+}
+
+// 详情布局（.common-detail-tab-page）
+// card外row和col可循环结构用于并排并列及更细方块的布局, card内row和col多用于文字等元素的流式结构
+// row和col自带竖向间隔，横向时使用gutter,ProCard自带padding和margin-bottom
+.common-detail-tab-page {
+  margin: 0;
+  padding: 0;
+
+  .common-basic-info {
+    & > .ant-pro-card-body {
+      // 防止ant-row被实时计算
+      .ant-row {
+        margin-bottom: 0 !important;
+        line-height: 35px !important;
+      }
+    }
+  }
+
+  .ant-pro-card {
+    .detail-card-unit;
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    &.common-basic-info {
+      .common-basic-info;
+    }
+  }
+
+  // 假设ProTable几乎不单独使用，列表总携带功能说明，包含于ProCard中
+  .ant-pro-table {
+    .ant-pro-table-search,
+    .ant-card-body {
+      padding: 0 !important;
+    }
+  }
+
+  &.ant-row,
+  *:not(.ant-dropdown) .ant-row {
+    .row-col-division;
+  }
+}

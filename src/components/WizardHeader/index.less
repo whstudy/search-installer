@@ -1,0 +1,115 @@
+@import '~antd/es/style/themes/default.less';
+
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+.featureName {
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: PingFang SC;
+}
+.rightContent {
+  margin-right: 30px;
+}
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+  :global(.ant-dropdown-menu-item) {
+    min-width: 160px;
+  }
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  .lef {
+    display: flex;
+    float: left;
+    min-width: 192px;
+    padding-left: 16px;
+    .header_logo {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 1px 4px 0 rgb(0 21 41 / 12%);
+      transition: background 0.3s, width 0.2s;
+    }
+  }
+
+  .right {
+    display: flex;
+    float: right;
+    margin-left: auto;
+    overflow: hidden;
+    .action {
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      > span {
+        vertical-align: middle;
+      }
+      &:hover {
+        background: #252a3d;
+      }
+      &:global(.opened) {
+        background: #252a3d;
+      }
+      .anticon {
+        font-size: 16px;
+      }
+    }
+    .search {
+      padding: 0 12px;
+      &:hover {
+        background: transparent;
+      }
+    }
+    .account {
+      .avatar {
+        margin-right: 8px;
+        color: @primary-color;
+        vertical-align: top;
+        background: rgba(255, 255, 255, 0.85);
+      }
+    }
+    .downArrow {
+      margin-top: 3px;
+      margin-left: 5px;
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+  }
+}
+
+.dark {
+  .action {
+    &:hover {
+      background: #252a3d;
+    }
+    &:global(.opened) {
+      background: #252a3d;
+    }
+  }
+}
+
+@media only screen and (max-width: @screen-md) {
+  :global(.ant-divider-vertical) {
+    vertical-align: unset;
+  }
+  .name {
+    display: none;
+  }
+  .right {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    .account {
+      .avatar {
+        margin-right: 0;
+      }
+    }
+    .search {
+      display: none;
+    }
+  }
+}

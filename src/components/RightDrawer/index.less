@@ -1,0 +1,23 @@
+@whiteColor: #fff;
+@bgColor: #f6f7fb;
+@bodyFontColor: rgba(0, 0, 0, 0.65);
+
+.rightDrawer {
+  :global {
+    .ant-drawer-header {
+      .ant-drawer-title {
+        font-weight: bold;
+      }
+    }
+    .ant-drawer-body {
+      padding: 16px;
+      background: @bgColor;
+    }
+  }
+  .panel {
+    min-height: 100%;
+    padding: 24px;
+    color: @bodyFontColor;
+    background: @whiteColor;
+  }
+}

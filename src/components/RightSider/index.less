@@ -1,0 +1,99 @@
+@whiteColor: #fff;
+@bgColor: #f6f7fb;
+
+.rightSider {
+  :global {
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list,
+    .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-list {
+      justify-content: space-around;
+      width: 100% !important;
+      background: @whiteColor;
+    }
+
+    .ant-affix {
+      top: 0 !important;
+    }
+
+    .ant-row {
+      line-height: 24px;
+    }
+
+    .ant-select-selection-item > .ant-row {
+      line-height: 30px;
+    }
+
+    .common-basic-info .ant-row {
+      margin: 0;
+      padding: 0;
+      line-height: 2.5 !important;
+    }
+
+    .ant-drawer-body {
+      padding: 0;
+      background: @bgColor;
+    }
+
+    .ant-card {
+      margin-bottom: 16px;
+    }
+
+    .group-title {
+      font-weight: 700;
+    }
+
+    // 抽屉title icon
+    .drawer-avatar svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    // 局部滚动
+    .ant-pro-page-container {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .ant-pro-grid-content {
+      height: calc(100% - 128px);
+      overflow-y: auto;
+    }
+
+    .ant-pro-page-container-children-content {
+      margin: 16px;
+    }
+
+    .ant-pro-page-container-warp {
+      // box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+
+      .ant-pro-page-container-content {
+        .ant-list-item {
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+.closeDrawer {
+  color: rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.hideScrollStyle {
+  &::-webkit-scrollbar {
+    width: 1px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}

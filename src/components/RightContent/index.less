@@ -1,0 +1,186 @@
+@import '~antd/es/style/themes/default.less';
+
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+
+  :global(.ant-dropdown-menu-item) {
+    min-width: 160px;
+  }
+}
+
+.account {
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  float: right;
+  margin-left: auto;
+  overflow: hidden;
+  height: 64px;
+  .action {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    > span {
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background: #252a3d;
+    }
+
+    &:global(.opened) {
+      background: #252a3d;
+    }
+
+    .anticon {
+      font-size: 16px;
+    }
+  }
+
+  .search {
+    padding: 0 12px;
+    font-size: 18px;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .account {
+    display: flex;
+    align-items: center;
+    .avatar {
+      margin-right: 8px;
+      color: @primary-color;
+      vertical-align: top;
+      background: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  .downArrow {
+    margin-top: 3px;
+    margin-left: 5px;
+    color: rgba(255, 255, 255, 0.65) !important;
+  }
+}
+
+.dark {
+  .action {
+    &:hover {
+      background: #252a3d;
+    }
+
+    &:global(.opened) {
+      background: #252a3d;
+    }
+  }
+}
+
+@media only screen and (max-width: @screen-md) {
+  :global(.ant-divider-vertical) {
+    vertical-align: unset;
+  }
+
+  .name {
+    display: none;
+  }
+
+  .right {
+    position: absolute;
+    top: 0;
+    right: 12px;
+
+    .account {
+      display: flex;
+      align-items: center;
+      .avatar {
+        margin-right: 0;
+      }
+    }
+
+    .search {
+      display: none;
+    }
+  }
+}
+
+.moreAction {
+  margin-left: 5px;
+  color: @primary-color;
+}
+
+.shutDownBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.shutDownMsgStyle {
+  margin-top: 200px;
+
+  :global {
+    .ant-message-notice-content {
+      width: 230px;
+      height: 60px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      border-left: 4px #2a68bf solid;
+
+      .ant-message-loading {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        height: 100%;
+        padding-left: 20px;
+        color: #fff !important;
+        font-size: 18px;
+
+        .anticon-loading {
+          margin-right: 20px;
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}
+
+// 控制未授权复制对消息弹框的位置
+:global {
+  .ant-message:has(.pairMessage) {
+    top: 60px;
+  }
+}
+
+.clusterDropBtnStyle {
+  :global {
+    .ant-dropdown-menu-item {
+      background: #fff;
+      .ant-btn {
+        border-color: transparent;
+        & .anticon-more {
+          color: rgba(0, 0, 0, 0.85);
+        }
+        & .anticon-plus {
+          color: #2a68bf;
+        }
+        &:hover {
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}

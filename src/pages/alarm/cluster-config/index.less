@@ -1,0 +1,58 @@
+@import (reference) '~antd/es/style/themes/default.less';
+
+@padding: 24px;
+
+.config {
+  .title {
+    padding: @padding;
+    color: fade(@black, 75%);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+  }
+
+  :global {
+    .ant-pro-card-body {
+      padding: 65px @padding !important;
+    }
+  }
+}
+
+.logMsgStyle {
+  margin-top: 70px;
+
+  :global {
+    .ant-message-notice-content {
+      width: 340px;
+      padding: 10px;
+      background: fade(@black, 75%);
+      border-left: 4px @primary-color solid;
+
+      .ant-message-loading {
+        display: flex;
+
+        .anticon-loading {
+          color: @white !important;
+        }
+
+        span:nth-child(2) {
+          flex: 1;
+
+          .logMsgText {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            color: @white;
+
+            a {
+              padding: 0 10px;
+              color: @white;
+              border: 1px fade(@white, 45%) solid;
+              border-radius: 3px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@white: #fff;
+@formBodyColor: rgba(0, 0, 0, 0.65);
+@drawerWrapperBodyBg: #f6f7fb;
+@padding-24: 24px;
+
+.ant-drawer-title {
+  font-weight: bold;
+}
+
+.ant-drawer-wrapper-body {
+  .ant-drawer-body {
+    background-color: @drawerWrapperBodyBg;
+    .ant-form-item-label > label {
+      color: @formBodyColor;
+    }
+
+    & > .ant-space {
+      width: 100%;
+      height: auto;
+      min-height: 100%;
+      margin: 0 auto;
+      padding: @padding-24;
+      background-color: @white;
+    }
+  }
+}
+
+.ant-modal-header {
+  .ant-modal-title {
+    font-weight: bold;
+  }
+}
+
+.ant-modal-body {
+  color: @formBodyColor;
+}

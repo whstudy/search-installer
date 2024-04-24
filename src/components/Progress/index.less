@@ -1,0 +1,62 @@
+// 百分比进度条
+.commonProgress {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  :global {
+    .ant-progress {
+      position: relative;
+      width: 100%;
+
+      .ant-progress-text {
+        width: 50px;
+        text-align: right;
+      }
+
+      .ant-progress-outer {
+        margin-right: -60px !important;
+        padding: 0 !important;
+
+        .ant-progress-inner {
+          width: calc(100% - 60px);
+          border-radius: 0;
+
+          .ant-progress-bg {
+            height: 1.5rem !important;
+          }
+        }
+      }
+    }
+
+    .ant-progress.no-show-value {
+      .ant-progress-outer {
+        margin-right: 0;
+
+        .ant-progress-inner {
+          width: 100%;
+        }
+      }
+    }
+
+    .tooltip-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .threshold-line {
+      position: absolute;
+      top: -6px;
+      padding: 0 8px;
+      cursor: pointer;
+
+      .ant-divider-vertical {
+        width: 2px !important;
+        height: 40px;
+        margin: 0;
+        background-color: #f2af00;
+      }
+    }
+  }
+}

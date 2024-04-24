@@ -1,0 +1,35 @@
+.container {
+  :global {
+    .ant-statistic {
+      display: flex;
+      flex-direction: column-reverse;
+
+      .ant-statistic-title {
+        .ant-col {
+          line-height: 1rem;
+
+          svg {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .ant-pro-table {
+      .ant-table-tbody > tr > td {
+        max-width: 500px !important;
+      }
+    }
+  }
+
+  .filterStyle {
+    padding: 11px 15px;
+    background: rgba(0, 0, 0, 0.1);
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+    }
+  }
+}
