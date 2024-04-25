@@ -13,14 +13,14 @@ import {
   Radio
 } from 'antd';
 import { FormattedMessage } from 'umi';
-import React, { useRef, useState, useEffect } from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import moment from 'moment';
 import {dsmObjectDelete, dsmObjectGet, dsmObjBucket, dsmDownload} from '@/services/dsm/objSearch';
 import {formatUnit} from "@/utils";
 import ProCard from "@ant-design/pro-card";
 import { saveAs } from 'file-saver';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import {CheckCircleFilled, InfoCircleOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -86,8 +86,8 @@ const SearchList = (props) => {
     paramsObject = {
       ...paramsObject,
       ...values,
-      buckets: values?.bucket?.map(o=>{
-        const oArr = o.split('-')
+      buckets: values?.bucket?.map(node=>{
+        const oArr = node.split('-')
         return {owner: oArr[0] == 'null' ? null : oArr[0], name: oArr[1]}
       }),
       name: values.name,
@@ -177,46 +177,39 @@ const SearchList = (props) => {
     });
   }
 
-  const handleChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-  };
-
-  interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-  }
-
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setDownloadArr(selectedRows)
-    },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
-  const objDownLoad = async (e) => {
-    const _downloadArr = e.record || downloadArr
-    for(const record of _downloadArr){
-      const result: any = await dsmDownload(
-        {
-          name: record.name,
-          bucket: record.bucket,
-          owner: record.owner,
-        },
-{ parseResponse: false }
-      );
-
-      const blob = await result.blob();
-      const fileName = `${record.name}`;
-      saveAs(blob, fileName);
+  const [nodes, setNodes] = useState<any[]>([])
+  
+  useEffect(()=>{
+    const _nodes: any = []
+    for(let i=0; i < 12; i++){
+      const _disks: any = []
+      let _j = 200
+      if(i === 0)
+        _j = 3
+      for(let j=0; j < _j; j++){
+        _disks.push({
+          id: j,
+        })
+      }
+      _nodes.push({
+        id: `${i}.${i}.${i}.${i}`,
+        disks: _disks,
+      })
     }
-  }
+    console.log(_nodes)
+    setNodes(_nodes)
+  }, [])
+  
+  const checkDisk = useCallback(
+    (node) => 
+      setNodes(prev =>
+        prev.map(
+          _node => node.id === _node.id ? {..._node, disks: _node.disks.map(
+            _disk => _disk.id === node.disk.id ? { ..._disk, checked: !node.disk.checked } : _disk
+          )} : _node
+        )
+      )
+  , [])
   
   return (
     <>
@@ -229,9 +222,19 @@ const SearchList = (props) => {
         }
       >
         <div className={styles.nodeContainer}>
-          {[1,2,3,4,5].map((o)=><div key={o} className={styles.formItemContainer}>
+          {nodes.map((node)=><div key={node.id} className={styles.formItemContainer}>
             <div className={styles.formItemTitle}>
-              1.1.1.1
+              {node.id}
+            </div>
+            <div className={styles.diskContainer}>
+              {node.disks.map((disk)=><div 
+                key={disk.id} 
+                className={`${styles.disk} ${disk.checked&&styles.checked}`} 
+                onClick={()=>checkDisk({id: node.id, disk: disk})}>
+                {disk.checked && <CheckCircleFilled className={styles.check}/>}
+                <div className={styles.diskIcon}></div>
+                <div className={styles.diskName}>sda-480GB</div>
+              </div>)}  
             </div>
           </div>)}
         </div>
