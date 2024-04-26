@@ -126,18 +126,15 @@ const WizardHeaderRight: React.FC = () => {
       <Space className={styles.lef}>
         <div className={styles.header_logo} id="logo">
           <a>
-            <img src="/logo-white.svg" alt="logo" />
+            <img src="/logo.svg" alt="logo" />
           </a>
         </div>
-        <div className={styles.featureName}>installer</div>
+        {/*<div className={styles.featureName}>installer</div>*/}
       </Space>
 
       <Space className={styles.rightContent}>
-        {localStorage.getItem('deployRedirect') !== `1` && (
-          <>
-            <Avatar className={styles.rightContent} />
-          </>
-        )}
+        <Avatar className={styles.rightContent} />
+        <SelectLang className={styles.action} />
       </Space>
     </div>
   );
