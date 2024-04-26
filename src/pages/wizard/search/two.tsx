@@ -233,7 +233,7 @@ const SearchList = (props) => {
                 onClick={()=>checkDisk({id: node.id, disk: disk})}>
                 {disk.checked && <CheckCircleFilled className={styles.check}/>}
                 <div className={styles.diskIcon}></div>
-                <div className={styles.diskName}>sda-480GB</div>
+                <div className={styles.diskName}>{disk.id}sda-480GB</div>
               </div>)}  
             </div>
           </div>)}
