@@ -32,7 +32,7 @@ const Index: React.FC = () => {
 
             <Steps
               direction="vertical"
-              current={1}
+              current={0}
               className={styles.steps}
             >
               <Step title={`添加节点`} />
