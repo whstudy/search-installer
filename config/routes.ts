@@ -1,17 +1,19 @@
 ﻿export default [
   {
     path: '/',
-    name: 'main',
+    // name: 'main',
     layout: false,
-    hideInMenu: false,
-    hideNav: false,
+    component: './main',
     routes: [
       {
         path: '/',
-        component: './main',
-        access: 'normalRoute',
-        deployMode: ['tfs', 'tos'],
-        exact: true,
+        name: 'two',
+        component: './main/search/two',
+      },
+      {
+        path: '/one',
+        name: 'one',
+        component: './main/search/one',
       },
     ],
   },

@@ -3,12 +3,12 @@ import Search from './search'
 import styles from './index.less';
 import { Layout, Steps } from 'antd';
 import {appSetupApiStepGet} from '@/services/dsm/esDeploy';
-import WizardHeader from '@/components/Header';
+import LnHeader from '@/components/Header';
 
 const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
 
-const Index: React.FC = () => {
+const Index: React.FC = (props) => {
 
   return (
     <>
@@ -22,7 +22,7 @@ const Index: React.FC = () => {
 
       <Layout className={styles.searchBody}>
         <Header className={styles.headerwrapper}>
-          <WizardHeader />
+          <LnHeader />
         </Header>
         <Layout>
           <Sider theme={'light'} width={270} className={styles.siderContainer}>
@@ -41,7 +41,7 @@ const Index: React.FC = () => {
               <Step title={`部署检索服务`} />
             </Steps>
           </Sider>
-          <Content className={styles.wizardContent}><Search /></Content>
+          <Content className={styles.wizardContent}>{props.children}</Content>
         </Layout>
       </Layout>
     </>

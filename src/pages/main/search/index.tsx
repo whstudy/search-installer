@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import SearchList from './two';
-import styles from './index.less';
-import ProCard from "@ant-design/pro-card";
-import {Tooltip} from "antd";
-import {InfoCircleOutlined} from "@ant-design/icons/lib";
+import Two from './two';
 
 type routeProps = {
   taskStatus: any;
@@ -21,7 +17,7 @@ const Searchs: React.FC<routeProps> = ({
   const [statusTitleVal, setStatusTitleVal] = useState({});
   return (
     
-      <SearchList
+      <Two
         statusStatisticChange={(items) => {
         }}
         statusTitleVal={statusTitleVal}

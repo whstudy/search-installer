@@ -38,15 +38,8 @@ export default function access(initialState) {
     hideInMenu.push(p);
   });
 
-  // filter by deployMode for access
-  const filterRoutes = filterRoutesByDeployMode(clonedRoutes as any[], deployMode);
-  const flattenRoutes = getRoutesPaths(filterRoutes, hideInMenu);
-
   return {
     denied: false,
-    superRoute: (route) => isEnable(route, flattenRoutes) && ['superadmin'].includes(role),
-    adminRoute: (route) => isEnable(route, flattenRoutes) && ['superadmin', 'admin'].includes(role),
-    normalRoute: (route) => isEnable(route, flattenRoutes),
     super: ['superadmin'].includes(role),
     admin: ['superadmin', 'admin'].includes(role),
   };

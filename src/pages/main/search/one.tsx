@@ -168,16 +168,6 @@ const SearchList = (props) => {
           </Space>
         </div>
       </ProCard>
-      <Modal
-        centered
-        title={'分享'}
-        visible={confirmVisible}
-        destroyOnClose={true}
-        footer={null}
-        onCancel={() => setConfirmVisible(false)}
-      >
-        <Share objParams={objParams}/>
-      </Modal>
     </>
   );
 };

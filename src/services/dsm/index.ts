@@ -2,7 +2,7 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as esDeploy from './esDeploy';
+import * as terraSearchDeploy from './terraSearchDeploy';
 export default {
-  esDeploy,
+  terraSearchDeploy,
 };

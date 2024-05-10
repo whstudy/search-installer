@@ -47,7 +47,7 @@ const AuthHeaderInterceptor = (url: string, options: any) => {
 };
 
 // fix dynamically redirect due to pending deployMode, it invokes everytime change route
-export function onRouteChange({ location }) {
+/*export function onRouteChange({ location }) {
   const deployMode = localStorage.getItem('deployMode') || 'tfs';
   const globalConfig = JSON.parse(localStorage.getItem('globalConfig') || '{}');
   const pathName = location.pathname;
@@ -58,7 +58,7 @@ export function onRouteChange({ location }) {
   if (pathName.includes('wizard') && !globalConfig.stateOpenwizard) {
     history.goBack();
   }
-}
+}*/
 
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
