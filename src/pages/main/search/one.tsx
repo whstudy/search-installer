@@ -1,4 +1,3 @@
-import type { ActionType } from '@ant-design/pro-table';
 import {
   Button,
   Form,
@@ -11,7 +10,6 @@ import {
   Tooltip,
   Radio
 } from 'antd';
-import { FormattedMessage } from 'umi';
 import React, { useRef, useState, useEffect } from 'react';
 import styles from '../index.less';
 import moment from 'moment';
@@ -31,44 +29,12 @@ const SearchList = (props) => {
   const [form] = Form.useForm();
 
 
-  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
 
   const [downloadArr, setDownloadArr] = useState<any>();
 
-  const [objParams, setObjParams] = useState()
 
   const onFinish = (values) => {
-    paramsObject.page = 1
-    setCurrent(1)
-    paramsObject = {
-      ...paramsObject,
-      ...values,
-      buckets: values?.bucket?.map(o=>{
-        const oArr = o.split('-')
-        return {owner: oArr[0] == 'null' ? null : oArr[0], name: oArr[1]}
-      }),
-      name: values.name,
-      size_operator: values.size_operator,
-      unit: undefined,
-      size: values.size * values.unit || undefined
-    }
-    paramsObject.time = undefined
-    if(values.time){
-      paramsObject.start_time = moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
-      paramsObject.end_time = moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
-    }
-  }
-
-  const getBucket = async () => {
-    const bucketListTemp: any = []
-    const bucketRes: any = await dsmObjBucket({}, {});
-    for (let i = 0; i < bucketRes.data.length; i++) {
-      bucketListTemp.push({
-        label: `${bucketRes.data[i].name}${bucketRes.data[i].owner?`（租户：${bucketRes.data[i].owner}）`:''}`,
-        value: `${bucketRes.data[i].owner}-${bucketRes.data[i].name}`,
-      })
-    }
-    setBucketList(bucketListTemp)
+    location.href = '#/two'
   }
 
   const options: any = [];

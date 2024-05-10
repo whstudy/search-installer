@@ -62,7 +62,7 @@ const target = 'https://mock.apifox.com/m1/1459334-0-default/'; // product BVT
 
 export default {
   dev: {
-    '/dsm/': {
+    '/app_setup/': {
       target,
       changeOrigin: true,
       secure: false,

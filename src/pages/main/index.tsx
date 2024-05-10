@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Search from './search'
 import styles from './index.less';
 import { Layout, Steps } from 'antd';
-import {appSetupApiStepGet} from '@/services/dsm/esDeploy';
+import {appSetupTerraSearchStepGet} from '@/services/dsm/terraSearchDeploy';
 import LnHeader from '@/components/Header';
 
 const { Header, Sider, Content } = Layout;
@@ -10,6 +10,18 @@ const { Step } = Steps;
 
 const Index: React.FC = (props) => {
 
+  const [stepInfo, setStepInfo] = useState<any>({})
+  
+  const getInitData = async () => {
+    const res = await appSetupTerraSearchStepGet({});
+    setStepInfo(res.data)
+    console.log(res)
+  };
+  
+  useEffect(()=>{
+    getInitData()
+  }, [])
+  
   return (
     <>
       {/*<Header className={styles.headerwrapper}>
@@ -32,13 +44,17 @@ const Index: React.FC = (props) => {
 
             <Steps
               direction="vertical"
-              current={0}
+              current={stepInfo.current_step}
               className={styles.steps}
             >
-              <Step title={`添加节点`} />
-              <Step title={`选择元数据盘`} />
-              <Step title={`MagnaScle集群信息`} />
-              <Step title={`部署检索服务`} />
+              {
+                stepInfo?.all_step?.map(
+                  (o) => 
+                    <>
+                      <Step title={o}/>
+                    </>
+                )
+              }
             </Steps>
           </Sider>
           <Content className={styles.wizardContent}>{props.children}</Content>

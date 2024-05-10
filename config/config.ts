@@ -14,11 +14,7 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
-  layout: {
-    locale: true,
-    siderWidth: 208,
-    ...defaultSettings,
-  },
+
   locale: {
     default: 'zh-CN',
     antd: true,

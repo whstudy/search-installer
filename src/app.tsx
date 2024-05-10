@@ -67,7 +67,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     // footerRender: () => <Footer />,
     onPageChange: () => {
     },
-    menuHeaderRender: undefined,
+    menuHeaderRender: false,
     ...initialState?.settings,
   };
 };
