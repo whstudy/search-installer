@@ -1,25 +1,22 @@
-import type { ActionType } from '@ant-design/pro-table';
 import {
   Button,
   Form,
   Input,
   message,
   Space,
-  Table,
   DatePicker,
   Select,
   Modal,
   Tooltip,
   Radio
 } from 'antd';
-import { FormattedMessage } from 'umi';
-import React, {useRef, useState, useEffect, useCallback} from 'react';
-import styles from './index.less';
+import { history } from "umi";
+import React, { useRef, useState, useEffect } from 'react';
+import styles from '../index.less';
 import moment from 'moment';
-import {formatUnit} from "@/utils";
+import {appSetupApiAddNodeGet} from '@/services/dsm/esDeploy';
 import ProCard from "@ant-design/pro-card";
 import { saveAs } from 'file-saver';
-import {CheckCircleFilled, InfoCircleOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -30,119 +27,16 @@ let paramsObject: any = {
 }
 
 const SearchList = (props) => {
-  const ref = useRef<ActionType>();
   const [form] = Form.useForm();
 
-  const [dataSource, setDataSource] = useState<any>();
-  const [bucketList, setBucketList] = useState<any>();
-  const [total, setTotal] = useState();
-  const [current, setCurrent] = useState(1);
 
-  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
-  const [deleteParams,setDeleteParams] = useState<any>()
 
   const [downloadArr, setDownloadArr] = useState<any>();
 
-  const [objParams, setObjParams] = useState()
-
-  const onReset = () => {
-    form.resetFields();
-  }
-  
-  // 删除
-  async function handleDelete() {
-    const hideMsg = message.loading(
-      <FormattedMessage id="component.router" defaultMessage="正在删除" />,
-      0,
-    );
-    const res = await dsmObjectDelete(deleteParams);
-    hideMsg();
-    if(res.code === "0"){
-      res?.message?.success(res.msg);
-      setTimeout(()=>{
-        getDataSource()
-      },500);
-    }else{
-      res?.message?.error(res.msg);
-    }
-    setConfirmVisible(false)
-  }
 
   const onFinish = (values) => {
-    paramsObject.page = 1
-    setCurrent(1)
-    paramsObject = {
-      ...paramsObject,
-      ...values,
-      buckets: values?.bucket?.map(node=>{
-        const oArr = node.split('-')
-        return {owner: oArr[0] == 'null' ? null : oArr[0], name: oArr[1]}
-      }),
-      name: values.name,
-      size_operator: values.size_operator,
-      unit: undefined,
-      size: values.size * values.unit || undefined
-    }
-    paramsObject.time = undefined
-    if(values.time){
-      paramsObject.start_time = moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
-      paramsObject.end_time = moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
-    }
-    getDataSource()
+    history.push('2')
   }
-
-  useEffect(() => {
-    getDataSource()
-  }, [])
-
-  const shareObj = (record) => {
-    setObjParams({
-      name: record.name,
-      bucket: record.bucket,
-      owner: record.owner,
-    })
-    setConfirmVisible(true);
-  };
-
-  const onChange = (pagination, filter, sorter, extra) => {
-    const orderMap = {
-      ascend: 'asc',
-      descend: 'desc',
-    }
-    if(extra.action!=="paginate"){
-      paramsObject.sort_field = sorter.order&&sorter.field
-      paramsObject.order = orderMap[sorter.order]
-      paramsObject.page = 1
-      setCurrent(1)
-    }else{
-      paramsObject.page = pagination.current
-      setCurrent(pagination.current)
-    }
-    getDataSource()
-  }
-
-  const unitOptions = [
-    {
-      label: 'B',
-      value: 1,
-    },
-    {
-      label: 'KB',
-      value: 1*1024,
-    },
-    {
-      label: 'MB',
-      value: 1*1024*1024,
-    },
-    {
-      label: 'GB',
-      value: 1*1024*1024*1024,
-    },
-    {
-      label: 'TB',
-      value: 1*1024*1024*1024*1024,
-    },
-  ]
 
   const options: any = [];
   for (let i = 10; i < 36; i++) {
@@ -152,66 +46,93 @@ const SearchList = (props) => {
     });
   }
 
-  const [hosts, setHosts] = useState<any[]>([])
-  
-  useEffect(()=>{
-    const _hosts: any = []
-    for(let i=0; i < 12; i++){
-      const _disks: any = []
-      let _j = 200
-      if(i === 0)
-        _j = 3
-      for(let j=0; j < _j; j++){
-        _disks.push({
-          id: j,
-        })
-      }
-      _hosts.push({
-        id: `${i}.${i}.${i}.${i}`,
-        disks: _disks,
-      })
+  interface DataType {
+    key: React.Key;
+    name: string;
+    age: number;
+    address: string;
+  }
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setDownloadArr(selectedRows)
+    },
+    getCheckboxProps: (record: DataType) => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+
+  const objDownLoad = async (e) => {
+    const _downloadArr = e.record || downloadArr
+    for(const record of _downloadArr){
+      const result: any = await dsmDownload(
+        {
+          name: record.name,
+          bucket: record.bucket,
+          owner: record.owner,
+        },
+        { parseResponse: false }
+      );
+
+      const blob = await result.blob();
+      const fileName = `${record.name}`;
+      saveAs(blob, fileName);
     }
-    console.log(_hosts)
-    setHosts(_hosts)
-  }, [])
-  
-  const checkDisk = useCallback(
-    (node) => 
-      setHosts(prev =>
-        prev.map(
-          _node => node.id === _node.id ? {..._node, disks: _node.disks.map(
-            _disk => _disk.id === node.disk.id ? { ..._disk, checked: true } : { ..._disk, checked: false }
-          )} : _node
-        )
-      )
-  , [])
-  
+  }
+
   return (
     <>
       <ProCard
         className={styles.searchListTop}
         title={
           <div className={styles.demoTitleDiv}>
-            <FormattedMessage id="monitor.historyAlarm.severity.major" />首先，添加检索服务节点
+            请输入MagnaScale集群信息
           </div>
         }
       >
-        <div className={styles.nodeContainer}>
-          {hosts.map((node)=><div key={node.id} className={styles.formItemContainer}>
-            <div className={styles.formItemTitle}>
-              {node.id}
-            </div>
-            <div className={styles.diskContainer}>
-              {node.disks.map((disk)=><div 
-                key={disk.id} 
-                className={`${styles.disk} ${disk.checked&&styles.checked}`} 
-                onClick={()=>checkDisk({id: node.id, disk: disk})}>
-                {disk.checked && <CheckCircleFilled className={styles.check}/>}
-                <div className={styles.diskIcon}></div>
-                <div className={styles.diskName}>{disk.id}sda-480GB</div>
-              </div>)}  
-            </div>
-          </div>)}
+        <div>
+          <Space className={styles.searchForm}>
+            <Form
+              layout={"vertical"}
+              onFinish={onFinish}
+              form={form}
+            >
+              <Form.Item label={'部署配置'} name={'bucket'}>
+                <Radio.Group
+                  size={'middle'}
+                  style={{ width: '100%' }}
+                  defaultValue={1}
+                  options={[
+                    {value: 1, label: `推荐`},
+                    {value: 2, label: `简单`},
+                  ]}
+                />
+              </Form.Item>
+
+              <Form.Item label={'节点IP'} name={'节点IP'}>
+                <Input.TextArea rows={4}/>
+              </Form.Item>
+
+              <Form.Item label={'用户名'} name={'用户名'}>
+                <Input/>
+              </Form.Item>
+
+              <Form.Item label={'密码'} name={'密码'}>
+                <Input/>
+              </Form.Item>
+
+              <Space className={styles.btnGroup}>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    下一步
+                  </Button>
+                </Form.Item>
+              </Space>
+            </Form>
+          </Space>
         </div>
       </ProCard>
     </>

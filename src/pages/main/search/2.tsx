@@ -1,8 +1,9 @@
-import { FormattedMessage } from 'umi';
+import { FormattedMessage, history } from 'umi';
 import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
+import {Button} from "antd";
 
 const SearchList = (props) => {
   const options: any = [];
@@ -47,6 +48,10 @@ const SearchList = (props) => {
       )
   , [])
   
+  const next = () => {
+    history.push('3')
+  }
+  
   return (
     <>
       <ProCard
@@ -74,6 +79,9 @@ const SearchList = (props) => {
             </div>
           </div>)}
         </div>
+        <Button type="primary" onClick={next}>
+          下一步
+        </Button>
       </ProCard>
     </>
   );
