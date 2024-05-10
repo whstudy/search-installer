@@ -16,8 +16,9 @@ import { FormattedMessage } from 'umi';
 import React, {useRef, useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import moment from 'moment';
-import {appSetupApiDiskGet} from '@/services/dsm/esDeploy';
+import {formatUnit} from "@/utils";
 import ProCard from "@ant-design/pro-card";
+import { saveAs } from 'file-saver';
 import {CheckCircleFilled, InfoCircleOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
@@ -44,9 +45,27 @@ const SearchList = (props) => {
 
   const [objParams, setObjParams] = useState()
 
-
   const onReset = () => {
     form.resetFields();
+  }
+  
+  // 删除
+  async function handleDelete() {
+    const hideMsg = message.loading(
+      <FormattedMessage id="component.router" defaultMessage="正在删除" />,
+      0,
+    );
+    const res = await dsmObjectDelete(deleteParams);
+    hideMsg();
+    if(res.code === "0"){
+      res?.message?.success(res.msg);
+      setTimeout(()=>{
+        getDataSource()
+      },500);
+    }else{
+      res?.message?.error(res.msg);
+    }
+    setConfirmVisible(false)
   }
 
   const onFinish = (values) => {
@@ -69,8 +88,12 @@ const SearchList = (props) => {
       paramsObject.start_time = moment(values.time[0]).format('YYYY-MM-DD HH:mm:ss')
       paramsObject.end_time = moment(values.time[1]).format('YYYY-MM-DD HH:mm:ss')
     }
+    getDataSource()
   }
 
+  useEffect(() => {
+    getDataSource()
+  }, [])
 
   const shareObj = (record) => {
     setObjParams({
@@ -95,7 +118,31 @@ const SearchList = (props) => {
       paramsObject.page = pagination.current
       setCurrent(pagination.current)
     }
+    getDataSource()
   }
+
+  const unitOptions = [
+    {
+      label: 'B',
+      value: 1,
+    },
+    {
+      label: 'KB',
+      value: 1*1024,
+    },
+    {
+      label: 'MB',
+      value: 1*1024*1024,
+    },
+    {
+      label: 'GB',
+      value: 1*1024*1024*1024,
+    },
+    {
+      label: 'TB',
+      value: 1*1024*1024*1024*1024,
+    },
+  ]
 
   const options: any = [];
   for (let i = 10; i < 36; i++) {

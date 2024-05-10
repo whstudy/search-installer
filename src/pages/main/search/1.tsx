@@ -10,6 +10,7 @@ import {
   Tooltip,
   Radio
 } from 'antd';
+import { history } from "umi";
 import React, { useRef, useState, useEffect } from 'react';
 import styles from '../index.less';
 import moment from 'moment';
@@ -34,7 +35,7 @@ const SearchList = (props) => {
 
 
   const onFinish = (values) => {
-    location.href = '#/two'
+    history.push('2')
   }
 
   const options: any = [];
