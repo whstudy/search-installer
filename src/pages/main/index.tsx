@@ -4,6 +4,7 @@ import styles from './index.less';
 import { Layout, Steps } from 'antd';
 import {appSetupTerraSearchStepGet} from '@/services/dsm/terraSearchDeploy';
 import LnHeader from '@/components/Header';
+import { history } from 'umi';
 
 const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
@@ -16,6 +17,7 @@ const Index: React.FC = (props) => {
     const res = await appSetupTerraSearchStepGet({});
     setStepInfo(res.data)
     console.log(res)
+    history.push(`${res?.data?.current_step}`)
   };
   
   useEffect(()=>{

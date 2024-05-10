@@ -1,7 +1,8 @@
 ﻿export default [
   {
+    path: '/',
     component: './main',
-    layout: false,
+    // layout: false,
     routes: [
       {
         path: '/1',

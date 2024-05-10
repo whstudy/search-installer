@@ -63,11 +63,16 @@ const AuthHeaderInterceptor = (url: string, options: any) => {
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     rightContentRender: () => <></>,
-    disableContentMargin: false,
+    disableContentMargin: true,
+    // 不展示菜单
+    menuRender: false,
+    // 不展示菜单顶栏
+    menuHeaderRender: false,
+    // 不展示顶栏
+    headerRender: false,
     // footerRender: () => <Footer />,
     onPageChange: () => {
     },
-    menuHeaderRender: false,
     ...initialState?.settings,
   };
 };

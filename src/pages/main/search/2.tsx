@@ -3,9 +3,11 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
-import {Button} from "antd";
+import {Button, Space} from "antd";
+import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 
-const SearchList = (props) => {
+const Two = (props) => {
+  // const intl = useIntl();
   const options: any = [];
   for (let i = 10; i < 36; i++) {
     options.push({
@@ -13,10 +15,10 @@ const SearchList = (props) => {
       value: i.toString(36) + i,
     });
   }
-
+  
   const [hosts, setHosts] = useState<any[]>([])
   
-  useEffect(()=>{
+  /*useEffect(()=>{
     const _hosts: any = []
     for(let i=0; i < 12; i++){
       const _disks: any = []
@@ -35,21 +37,37 @@ const SearchList = (props) => {
     }
     console.log(_hosts)
     setHosts(_hosts)
+  }, [])*/
+
+  const getInitData = async () => {
+    const res = await appSetupTerraSearchDiskGet({});
+    setHosts(res.data)
+    console.log(res)
+  };
+
+  useEffect(()=>{
+    getInitData()
   }, [])
   
   const checkDisk = useCallback(
     (node) => 
       setHosts(prev =>
         prev.map(
-          _node => node.id === _node.id ? {..._node, disks: _node.disks.map(
-            _disk => _disk.id === node.disk.id ? { ..._disk, checked: true } : { ..._disk, checked: false }
+          _node => node.ip_address === _node.ip_address ? {..._node, disks: _node.disks.map(
+            _disk => _disk.path === node.disk.path ? { ..._disk, checked: true } : { ..._disk, checked: false }
           )} : _node
         )
       )
   , [])
   
-  const next = () => {
+  const next = async () => {
+    const res = await appSetupTerraSearchDisk(hosts);
+    console.log(res)
     history.push('3')
+  }
+
+  const up = () => {
+    history.push('1')
   }
   
   return (
@@ -58,20 +76,21 @@ const SearchList = (props) => {
         className={styles.searchListTop}
         title={
           <div className={styles.demoTitleDiv}>
-            <FormattedMessage id="monitor.historyAlarm.severity.major" />首先，添加检索服务节点
+            <FormattedMessage id="monitor.historyAlarm.severity.major" />
+            首先，添加检索服务节点
           </div>
         }
       >
         <div className={styles.nodeContainer}>
-          {hosts.map((node)=><div key={node.id} className={styles.formItemContainer}>
+          {hosts.map((node)=><div key={node.ip_address} className={styles.formItemContainer}>
             <div className={styles.formItemTitle}>
-              {node.id}
+              {node.ip_address}
             </div>
             <div className={styles.diskContainer}>
               {node.disks.map((disk)=><div 
-                key={disk.id} 
+                key={disk.path} 
                 className={`${styles.disk} ${disk.checked&&styles.checked}`} 
-                onClick={()=>checkDisk({id: node.id, disk: disk})}>
+                onClick={()=>checkDisk({ip_address: node.ip_address, disk: disk})}>
                 {disk.checked && <CheckCircleFilled className={styles.check}/>}
                 <div className={styles.diskIcon}></div>
                 <div className={styles.diskName}>{disk.id}sda-480GB</div>
@@ -79,11 +98,16 @@ const SearchList = (props) => {
             </div>
           </div>)}
         </div>
-        <Button type="primary" onClick={next}>
-          下一步
-        </Button>
+        <Space>
+          <Button type="primary" onClick={up}>
+            上一步
+          </Button>
+          <Button type="primary" onClick={next}>
+            下一步
+          </Button>
+        </Space>
       </ProCard>
     </>
   );
 };
-export default SearchList;
+export default Two;
