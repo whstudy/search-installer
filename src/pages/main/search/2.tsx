@@ -5,6 +5,10 @@ import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
 import {Button, Space} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
+import { ReactComponent as NVME } from '@/assets/NVME.svg';
+import { ReactComponent as SATA } from '@/assets/SATA.svg';
+import { ReactComponent as SAS } from '@/assets/SAS.svg';
+import { ReactComponent as HDD } from '@/assets/HDD.svg';
 
 const Two = (props) => {
   // const intl = useIntl();
@@ -92,7 +96,9 @@ const Two = (props) => {
                 className={`${styles.disk} ${disk.checked&&styles.checked}`} 
                 onClick={()=>checkDisk({ip_address: node.ip_address, disk: disk})}>
                 {disk.checked && <CheckCircleFilled className={styles.check}/>}
-                <div className={styles.diskIcon}></div>
+                <div className={styles.diskIcon}>
+                  <img src={require(`@/assets/${disk.disk_type}.svg`)} />
+                </div>
                 <div className={styles.diskName}>{disk.id}sda-480GB</div>
               </div>)}  
             </div>
