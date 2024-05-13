@@ -5,10 +5,8 @@ import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
 import {Button, Space} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
-import { ReactComponent as NVME } from '@/assets/NVME.svg';
-import { ReactComponent as SATA } from '@/assets/SATA.svg';
-import { ReactComponent as SAS } from '@/assets/SAS.svg';
-import { ReactComponent as HDD } from '@/assets/HDD.svg';
+import { formatUnit } from '@/utils/format'
+
 
 const Two = (props) => {
   // const intl = useIntl();
@@ -99,7 +97,7 @@ const Two = (props) => {
                 <div className={styles.diskIcon}>
                   <img src={require(`@/assets/${disk.disk_type}.svg`)} />
                 </div>
-                <div className={styles.diskName}>{disk.id}sda-480GB</div>
+                <div className={styles.diskName}>{disk.disk_type}-{formatUnit(disk.size)}</div>
               </div>)}  
             </div>
           </div>)}

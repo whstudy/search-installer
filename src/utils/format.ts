@@ -5,7 +5,7 @@ const checkIsInteger = (num: number) => {
   if (Number.isInteger(num)) {
     return num;
   }
-  return Math.floor(num * 10) / 10;
+  return Math.floor(num * 1) / 1;
 };
 
 export const formatUnit = (val: number | undefined) => {
@@ -13,26 +13,26 @@ export const formatUnit = (val: number | undefined) => {
     const num = typeof val === 'number' ? val : val * 1;
     if (num >= 1024 * 1024 * 1024 * 1024) {
       // bytes format to TB
-      return `${checkIsInteger(num / (1024 * 1024 * 1024 * 1024))} TB`;
+      return `${checkIsInteger(num / (1024 * 1024 * 1024 * 1024))}TB`;
     }
     if (num >= 1024 * 1024 * 1024) {
       // bytes format to GB
-      return `${checkIsInteger(num / (1024 * 1024 * 1024))} GB`;
+      return `${checkIsInteger(num / (1024 * 1024 * 1024))}GB`;
     }
     if (num >= 1024 * 1024) {
       // bytes format to MB
-      return `${checkIsInteger(num / (1024 * 1024))} MB`;
+      return `${checkIsInteger(num / (1024 * 1024))}MB`;
     }
     if (num >= 1024) {
       // bytes format to KB
-      return `${checkIsInteger(num / 1024)} KB`;
+      return `${checkIsInteger(num / 1024)}KB`;
     }
     if (num < 1024) {
       // show bytes
-      return `${checkIsInteger(num)} B`;
+      return `${checkIsInteger(num)}B`;
     }
   }
-  return '0 B';
+  return '0B';
 };
 
 export const formatTime = (time: string | undefined) => {

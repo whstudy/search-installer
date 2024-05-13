@@ -2,85 +2,31 @@ import {
   Button,
   Form,
   Input,
-  message,
   Space,
-  DatePicker,
-  Select,
-  Modal,
-  Tooltip,
   Radio
 } from 'antd';
-import { history } from "umi";
+import {Access, history } from "umi";
 import React, { useRef, useState, useEffect } from 'react';
-import styles from '../index.less';
-import moment from 'moment';
-import {appSetupApiAddNodeGet} from '@/services/dsm/esDeploy';
+import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
-import { saveAs } from 'file-saver';
+import {appSetupTerraSearchClusterNodeGet} from "@/services/dsm/terraSearchDeploy";
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
-
-let paramsObject: any = {
-  page: 1,
-  page_size: 10,
-}
-
-const SearchList = (props) => {
+const One = (props) => {
   const [form] = Form.useForm();
 
+  const getInitData = async () => {
+    const res = await appSetupTerraSearchClusterNodeGet({});
+    form?.setFieldsValue({
+      ...res.data,
+    });
+  };
 
-
-  const [downloadArr, setDownloadArr] = useState<any>();
-
+  useEffect(()=>{
+    getInitData()
+  }, [])
 
   const onFinish = (values) => {
     history.push('2')
-  }
-
-  const options: any = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
-    });
-  }
-
-  interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-  }
-
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setDownloadArr(selectedRows)
-    },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
-  const objDownLoad = async (e) => {
-    const _downloadArr = e.record || downloadArr
-    for(const record of _downloadArr){
-      const result: any = await dsmDownload(
-        {
-          name: record.name,
-          bucket: record.bucket,
-          owner: record.owner,
-        },
-        { parseResponse: false }
-      );
-
-      const blob = await result.blob();
-      const fileName = `${record.name}`;
-      saveAs(blob, fileName);
-    }
   }
 
   return (
@@ -100,22 +46,34 @@ const SearchList = (props) => {
               onFinish={onFinish}
               form={form}
             >
-              <Form.Item label={'部署配置'} name={'bucket'}>
+              <Form.Item label={'部署配置'} name={'deploy_mode'}>
                 <Radio.Group
                   size={'middle'}
                   style={{ width: '100%' }}
-                  defaultValue={1}
+                  // defaultValue={1}
                   options={[
-                    {value: 1, label: `推荐`},
-                    {value: 2, label: `简单`},
+                    {value: `fast`, label: `快速`},
+                    {value: `standard`, label: `标准`},
                   ]}
                 />
               </Form.Item>
-
-              <Form.Item label={'节点IP'} name={'节点IP'}>
-                <Input.TextArea rows={4}/>
+              
+              <Form.Item noStyle dependencies={['deploy_mode']}>
+                {() => (
+                  <>
+                      <Form.Item
+                        className={styles.deployModeDesc}
+                      >
+                        {form.getFieldValue('deploy_mode') === `standard` ? `标准部署的确可以支持部署在3到10个节点上，这种部署方式通常用于较大规模的检索集群，以提供更高的性能和可靠性` : `快速部署支持单节点部署，这种部署方式通常能够帮助客户在资源有限的情况下快速部署检索服务`}
+                      </Form.Item>
+                    
+                    <Form.Item label={'节点IP'} name={'节点IP'}>
+                      {form.getFieldValue('deploy_mode') === `standard` ? <Input.TextArea rows={4} placeholder={`3≤节点数量≤10`}/> : <Input placeholder={`请输入一个节点IP`}/>}
+                    </Form.Item>
+                  </>
+                )}
               </Form.Item>
-
+                  
               <Form.Item label={'用户名'} name={'用户名'}>
                 <Input/>
               </Form.Item>
@@ -138,4 +96,4 @@ const SearchList = (props) => {
     </>
   );
 };
-export default SearchList;
+export default One;
