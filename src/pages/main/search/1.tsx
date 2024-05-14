@@ -3,7 +3,8 @@ import {
   Form,
   Input,
   Space,
-  Radio
+  Radio,
+  Spin
 } from 'antd';
 import {Access, history } from "umi";
 import React, { useRef, useState, useEffect } from 'react';
@@ -14,8 +15,12 @@ import {appSetupTerraSearchClusterNodeGet} from "@/services/dsm/terraSearchDeplo
 const One = (props) => {
   const [form] = Form.useForm();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   const getInitData = async () => {
+    setIsLoading(true)
     const res = await appSetupTerraSearchClusterNodeGet({});
+    setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
     });
@@ -30,7 +35,7 @@ const One = (props) => {
   }
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <ProCard
         className={styles.searchListTop}
         title={
@@ -93,7 +98,7 @@ const One = (props) => {
           </Space>
         </div>
       </ProCard>
-    </>
+    </Spin>
   );
 };
 export default One;

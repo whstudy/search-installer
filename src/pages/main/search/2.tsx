@@ -3,7 +3,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
-import {Button, Space} from "antd";
+import {Button, Space, Spin} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 import { formatUnit } from '@/utils/format'
 
@@ -41,9 +41,13 @@ const Two = (props) => {
     setHosts(_hosts)
   }, [])*/
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   const getInitData = async () => {
+    setIsLoading(true)
     const res = await appSetupTerraSearchDiskGet({});
     setHosts(res.data)
+    setIsLoading(false)
     console.log(res)
   };
 
@@ -73,7 +77,7 @@ const Two = (props) => {
   }
   
   return (
-    <>
+    <Spin spinning={isLoading}>
       <ProCard
         className={styles.searchListTop}
         title={
@@ -111,7 +115,7 @@ const Two = (props) => {
           </Button>
         </Space>
       </ProCard>
-    </>
+    </Spin>
   );
 };
 export default Two;
