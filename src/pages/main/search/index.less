@@ -454,9 +454,43 @@
 }
 
 .searchListTop {
-  min-height: -webkit-fill-available;
+  background: white;
+  height: calc(100vh - 130px);
+  overflow: auto;
   margin-bottom: 20px !important;
   box-shadow: 0px 2px 2px 0px #323D5926;
+}
+
+.four:extend(.searchListTop) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .doing {
+    margin-top: 9px;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 9px;
+  }
+  .failedDesc {
+    color: #000000A6;
+    margin-bottom: 9px;
+  }
+  .succeedDesc {
+    margin-bottom: 38px;
+    font-size: 16px;
+  }
+  .numText {
+    display: inline-flex;
+    border-radius: 100%;
+    background: #2A68BF;
+    width: 28px;
+    height: 28px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+  }
 }
 
 .searchTooltip {
@@ -472,6 +506,9 @@
 }
 
 .nodeContainer {
+  height: calc(100vh - 265px);
+  overflow: auto;
+  margin-bottom: 30px;
   .formItemContainer {
     display: inline-block;
     margin-right: 3%;

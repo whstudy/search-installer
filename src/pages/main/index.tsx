@@ -46,7 +46,7 @@ const Index: React.FC = (props) => {
 
             <Steps
               direction="vertical"
-              current={stepInfo.current_step}
+              current={stepInfo.current_step-1}
               className={styles.steps}
             >
               {

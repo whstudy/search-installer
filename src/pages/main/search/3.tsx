@@ -19,7 +19,6 @@ import {
 
 const Three = (props) => {
   const [form] = Form.useForm();
-  
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getInitData = async () => {
     setIsLoading(true)
@@ -27,6 +26,10 @@ const Three = (props) => {
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
+      certificate_filename: res?.data?.certificate_filename?[{
+        name: res?.data?.certificate_filename,
+        originFileObj:  new Blob([res?.data?.certificate_content||``])
+      }]:[],
     });
   };
 
@@ -37,10 +40,10 @@ const Three = (props) => {
   const onFinish = async (values) => {
 
     const reader = new FileReader();
-    reader.readAsText(values.cert_name?.[0].originFileObj);
+    reader.readAsText(values.certificate_filename?.[0].originFileObj);
     reader.onloadend = async (e: any) => {
       try {
-        const res: any = await appSetupApiGetMagnascaleClusterInfo({ ...values, certificate_filename: values.cert_name?.[0]?.name, certificate_content: e.target.result });
+        const res: any = await appSetupApiGetMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         if ((res as any).success) {
           message.success(res?.msg);
           return true;
@@ -51,7 +54,7 @@ const Three = (props) => {
         return false;
       }
     }
-    history.push('2')
+    history.push('4')
   }
 
   const up = () => {
@@ -84,8 +87,10 @@ const Three = (props) => {
                 <Input/>
               </Form.Item>
 
-              {true ? <ProFormUploadButton
-                name="cert_name"
+              <Form.Item noStyle name={'certificate_content'}></Form.Item>
+
+              <ProFormUploadButton
+                name="certificate_filename"
                 label={`导入证书`}
                 title={`导入证书`}
                 max={1}
@@ -102,11 +107,7 @@ const Three = (props) => {
                     message: <FormattedMessage id="setUp.selectFile" defaultMessage="请选择文件" />,
                   },
                 ]}
-              /> : <Form.Item
-                label={`导入检索集群证书`}
-              >
-                已导入证书：{form.getFieldValue('cert_name')}
-              </Form.Item>}
+              />
               
               <Space className={styles.btnGroup}>
                 <Form.Item>

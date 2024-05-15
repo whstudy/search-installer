@@ -79,7 +79,7 @@ const Two = (props) => {
   return (
     <Spin spinning={isLoading}>
       <ProCard
-        className={styles.searchListTop}
+        className={styles.searcprohListTop}
         title={
           <div className={styles.demoTitleDiv}>
             首先，添加检索服务节点
