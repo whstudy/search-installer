@@ -82,7 +82,6 @@ const Two = (props) => {
         className={styles.searchListTop}
         title={
           <div className={styles.demoTitleDiv}>
-            <FormattedMessage id="monitor.historyAlarm.severity.major" />
             首先，添加检索服务节点
           </div>
         }

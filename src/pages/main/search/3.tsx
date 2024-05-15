@@ -2,89 +2,64 @@ import {
   Button,
   Form,
   Input,
-  message,
   Space,
-  DatePicker,
-  Select,
-  Modal,
-  Tooltip,
-  Radio
+  Spin,
+  message
 } from 'antd';
-import { history } from "umi";
-import React, { useRef, useState, useEffect } from 'react';
-import styles from '../index.less';
-import moment from 'moment';
-import {appSetupApiAddNodeGet} from '@/services/dsm/esDeploy';
+import {FormattedMessage, history} from "umi";
+import React, {  useState, useEffect } from 'react';
+import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
-import { saveAs } from 'file-saver';
+import { ProFormUploadButton } from '@ant-design/pro-form';
+import {
+  appSetupApiGetMagnascaleClusterInfoGet,
+  appSetupApiGetMagnascaleClusterInfo,
+} from "@/services/dsm/terraSearchDeploy";
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
 
-let paramsObject: any = {
-  page: 1,
-  page_size: 10,
-}
-
-const SearchList = (props) => {
+const Three = (props) => {
   const [form] = Form.useForm();
+  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const getInitData = async () => {
+    setIsLoading(true)
+    const res = await appSetupApiGetMagnascaleClusterInfoGet({});
+    setIsLoading(false)
+    form?.setFieldsValue({
+      ...res.data,
+    });
+  };
 
+  useEffect(()=>{
+    getInitData()
+  }, [])
 
+  const onFinish = async (values) => {
 
-  const [downloadArr, setDownloadArr] = useState<any>();
-
-
-  const onFinish = (values) => {
+    const reader = new FileReader();
+    reader.readAsText(values.cert_name?.[0].originFileObj);
+    reader.onloadend = async (e: any) => {
+      try {
+        const res: any = await appSetupApiGetMagnascaleClusterInfo({ ...values, certificate_filename: values.cert_name?.[0]?.name, certificate_content: e.target.result });
+        if ((res as any).success) {
+          message.success(res?.msg);
+          return true;
+        }
+        message.error(res?.msg);
+        return false;
+      } catch (error) {
+        return false;
+      }
+    }
     history.push('2')
   }
 
-  const options: any = [];
-  for (let i = 10; i < 36; i++) {
-    options.push({
-      label: i.toString(36) + i,
-      value: i.toString(36) + i,
-    });
+  const up = () => {
+    history.push('2')
   }
-
-  interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
-    address: string;
-  }
-
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setDownloadArr(selectedRows)
-    },
-    getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
-  const objDownLoad = async (e) => {
-    const _downloadArr = e.record || downloadArr
-    for(const record of _downloadArr){
-      const result: any = await dsmDownload(
-        {
-          name: record.name,
-          bucket: record.bucket,
-          owner: record.owner,
-        },
-        { parseResponse: false }
-      );
-
-      const blob = await result.blob();
-      const fileName = `${record.name}`;
-      saveAs(blob, fileName);
-    }
-  }
-
+  
   return (
-    <>
+    <Spin spinning={isLoading}>
       <ProCard
         className={styles.searchListTop}
         title={
@@ -100,31 +75,45 @@ const SearchList = (props) => {
               onFinish={onFinish}
               form={form}
             >
-              <Form.Item label={'部署配置'} name={'bucket'}>
-                <Radio.Group
-                  size={'middle'}
-                  style={{ width: '100%' }}
-                  defaultValue={1}
-                  options={[
-                    {value: 1, label: `推荐`},
-                    {value: 2, label: `简单`},
-                  ]}
-                />
-              </Form.Item>
 
-              <Form.Item label={'节点IP'} name={'节点IP'}>
-                <Input.TextArea rows={4}/>
-              </Form.Item>
-
-              <Form.Item label={'用户名'} name={'用户名'}>
+              <Form.Item label={'MagnaScale集群业务访问域名'} name={'domain_name'}>
                 <Input/>
               </Form.Item>
 
-              <Form.Item label={'密码'} name={'密码'}>
+              <Form.Item label={'HTTPS端口'} name={'https_port'}>
                 <Input/>
               </Form.Item>
 
+              {true ? <ProFormUploadButton
+                name="cert_name"
+                label={`导入证书`}
+                title={`导入证书`}
+                max={1}
+                listType="text"
+                fieldProps={{
+                  name: 'file',
+                  beforeUpload: file => {
+                    return false;
+                  },
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: <FormattedMessage id="setUp.selectFile" defaultMessage="请选择文件" />,
+                  },
+                ]}
+              /> : <Form.Item
+                label={`导入检索集群证书`}
+              >
+                已导入证书：{form.getFieldValue('cert_name')}
+              </Form.Item>}
+              
               <Space className={styles.btnGroup}>
+                <Form.Item>
+                  <Button type="primary" onClick={up}>
+                    上一步
+                  </Button>
+                </Form.Item>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
                     下一步
@@ -135,7 +124,7 @@ const SearchList = (props) => {
           </Space>
         </div>
       </ProCard>
-    </>
+    </Spin>
   );
 };
-export default SearchList;
+export default Three;
