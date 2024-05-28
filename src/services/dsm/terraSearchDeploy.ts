@@ -107,8 +107,8 @@ export async function appSetupTerraSearchDisk(
   );
 }
 
-/** 获取部署状态 获取DXN集群配置信息 GET /app_setup/api/get_magnascale_cluster_info/ */
-export async function appSetupApiGetMagnascaleClusterInfoGet(options?: { [key: string]: any }) {
+/** 获取DXN集群配置信息 获取DXN集群配置信息 GET /app_setup/api/magnascale_cluster_info/ */
+export async function appSetupApiMagnascaleClusterInfoGet(options?: { [key: string]: any }) {
   return request<
     {
       code?: string;
@@ -120,14 +120,14 @@ export async function appSetupApiGetMagnascaleClusterInfoGet(options?: { [key: s
         certificate_filename?: string;
       };
     } & API.RequestExtend
-  >('/app_setup/api/get_magnascale_cluster_info/', {
+  >('/app_setup/api/magnascale_cluster_info/', {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 配置DXN信息 配置DXN信息以及证书 POST /app_setup/api/get_magnascale_cluster_info/ */
-export async function appSetupApiGetMagnascaleClusterInfo(
+/** 配置DXN信息 配置DXN信息以及证书 POST /app_setup/api/magnascale_cluster_info/ */
+export async function appSetupApiMagnascaleClusterInfo(
   body: {
     /** DXN域名 */
     domain_name: string;
@@ -139,7 +139,7 @@ export async function appSetupApiGetMagnascaleClusterInfo(
   options?: { [key: string]: any },
 ) {
   return request<{ code?: string; msg?: string; data?: any } & API.RequestExtend>(
-    '/app_setup/api/get_magnascale_cluster_info/',
+    '/app_setup/api/magnascale_cluster_info/',
     {
       method: 'POST',
       headers: {
