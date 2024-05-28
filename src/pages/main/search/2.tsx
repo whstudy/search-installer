@@ -3,12 +3,26 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
-import {Button, Space, Spin} from "antd";
+import {Button, Modal, Space, Spin} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 import { formatUnit } from '@/utils/format'
 
 
 const Two = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  
   // const intl = useIntl();
   const options: any = [];
   for (let i = 10; i < 36; i++) {
@@ -114,6 +128,9 @@ const Two = (props) => {
           </Button>
         </Space>
       </ProCard>
+      <Modal title="提示" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>容量不一致会导致数据不均衡</p>
+      </Modal>
     </Spin>
   );
 };

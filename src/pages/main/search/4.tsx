@@ -52,10 +52,10 @@ const Four = (props) => {
     history.push('4')
   }
 
-  const up = () => {
-    history.push('2')
+  const reDeploy = () => {
+    history.push(`1`)
   }
-
+  
   return (
     <Spin spinning={isLoading}>
       <div
@@ -68,10 +68,10 @@ const Four = (props) => {
         {result.status === `failed` && <>
           <div className={styles.doing}>检索服务部署失败</div>
           <div className={styles.failedDesc}>失败原因：连接到部署节点超时</div>
-          <Button>重新部署</Button>
+          <Button onClick={reDeploy}>重新部署</Button>
         </>}
         {result.status === `succeed` && <>
-          <div className={styles.doing}>检索服务部署完成</div>
+          <div className={`${styles.doing} ${styles.succeed}`}>检索服务部署完成</div>
           <div>
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>1</div>

@@ -12,8 +12,8 @@ import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import { ProFormUploadButton } from '@ant-design/pro-form';
 import {
-  appSetupApiGetMagnascaleClusterInfoGet,
-  appSetupApiGetMagnascaleClusterInfo,
+  appSetupApiMagnascaleClusterInfoGet,
+  appSetupApiMagnascaleClusterInfo,
 } from "@/services/dsm/terraSearchDeploy";
 
 
@@ -22,7 +22,7 @@ const Three = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await appSetupApiGetMagnascaleClusterInfoGet({});
+    const res = await appSetupApiMagnascaleClusterInfoGet({});
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
@@ -43,7 +43,7 @@ const Three = (props) => {
     reader.readAsText(values.certificate_filename?.[0].originFileObj);
     reader.onloadend = async (e: any) => {
       try {
-        const res: any = await appSetupApiGetMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
+        const res: any = await appSetupApiMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         if ((res as any).success) {
           message.success(res?.msg);
           return true;
