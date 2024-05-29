@@ -7,22 +7,9 @@ import {Button, Modal, Space, Spin} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 import { formatUnit } from '@/utils/format'
 
+const { confirm } = Modal;
 
 const Two = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  
   // const intl = useIntl();
   const options: any = [];
   for (let i = 10; i < 36; i++) {
@@ -80,10 +67,35 @@ const Two = (props) => {
       )
   , [])
   
-  const next = async () => {
+  const submitDisk = async () => {
     const res = await appSetupTerraSearchDisk(hosts);
     console.log(res)
     history.push('3')
+  }
+  
+  const next = () => {
+    const hostsSizeSet = 
+      new Set(
+        hosts.map(
+          host => host.disks.filter(disk => disk.checked)
+            .map(disk => formatUnit(disk.size))
+        )
+          .flat()
+      );
+    console.log(hostsSizeSet)
+    if (hostsSizeSet.size > 1) {
+      confirm({
+        title: '提示',
+        content: '容量不一致会导致数据不均衡',
+        okText: '下一步',
+        onOk() {
+          submitDisk()
+        },
+        onCancel() {},
+      });
+    } else {
+      submitDisk()
+    }
   }
 
   const up = () => {
@@ -128,9 +140,6 @@ const Two = (props) => {
           </Button>
         </Space>
       </ProCard>
-      <Modal title="提示" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>容量不一致会导致数据不均衡</p>
-      </Modal>
     </Spin>
   );
 };

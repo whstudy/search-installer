@@ -4,7 +4,8 @@ import {
   Input,
   Space,
   Spin,
-  message
+  message,
+  Typography
 } from 'antd';
 import {FormattedMessage, history} from "umi";
 import React, {  useState, useEffect } from 'react';
@@ -16,7 +17,7 @@ import {
   appSetupApiGetMagnascaleClusterInfo,
 } from "@/services/dsm/terraSearchDeploy";
 
-
+const { Paragraph } = Typography;
 const Four = (props) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,11 +76,18 @@ const Four = (props) => {
           <div>
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>1</div>
-              需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址: 10.128.10.10：9200
+              <div className={styles.descText}>
+                需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
+                <Paragraph copyable>10.128.10.10:9200</Paragraph>
+              </div>
             </div>
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>2</div>
-              请点击https://10.128.128.99：808进行对象检索
+              <div className={styles.descText}>
+                请点击
+                <a className={styles.link}>https://10.128.128.99:808</a>
+                进行对象检索
+              </div>
             </div>
           </div>
         </>}
