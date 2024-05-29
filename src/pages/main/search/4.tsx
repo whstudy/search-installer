@@ -14,17 +14,19 @@ import ProCard from "@ant-design/pro-card";
 import { ProFormUploadButton } from '@ant-design/pro-form';
 import {
   appSetupApiGetTerraSearchDeployResultGet,
-  appSetupApiGetMagnascaleClusterInfo,
+  appSetupApiGetMagnascaleClusterInfo, appSetupApiMagnascaleClusterInfoGet,
 } from "@/services/dsm/terraSearchDeploy";
 let timeId;
 const { Paragraph } = Typography;
 const Four = (props) => {
-  const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [result, setResult] = useState<any>({})
+  const [clusterInfo, setClusterInfo] = useState<any>({})
   const getInitData = async () => {
     setIsLoading(true)
     const res: any = await appSetupApiGetTerraSearchDeployResultGet({});
+    const clusterInfoRes = await appSetupApiMagnascaleClusterInfoGet({});
+    setClusterInfo(clusterInfoRes.data)
     setIsLoading(false)
     setResult(res.data)
   };
@@ -56,7 +58,7 @@ const Four = (props) => {
         </>}
         {result.status === `failed` && <>
           <div className={styles.doing}>检索服务部署失败</div>
-          <div className={styles.failedDesc}>失败原因：连接到部署节点超时</div>
+          <div className={styles.failedDesc}>失败原因：{result.failed_reason}</div>
           <Button onClick={reDeploy}>重新部署</Button>
         </>}
         {result.status === `succeed` && <>
@@ -66,14 +68,14 @@ const Four = (props) => {
               <div className={styles.numText}>1</div>
               <div className={styles.descText}>
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
-                <Paragraph copyable>10.128.10.10:9200</Paragraph>
+                <Paragraph copyable>{clusterInfo.domain_name}</Paragraph>
               </div>
             </div>
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>2</div>
               <div className={styles.descText}>
                 请点击
-                <a href={`https://10.128.128.99:808`} target="_blank" className={styles.link}>https://10.128.128.99:808</a>
+                <a href={result.terra_search_app_address} target="_blank" className={styles.link}>{result.terra_search_app_address}</a>
                 进行对象检索
               </div>
             </div>
