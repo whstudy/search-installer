@@ -88,7 +88,9 @@ const Three = (props) => {
                 <Input/>
               </Form.Item>
 
-              <Form.Item noStyle name={'certificate_content'}></Form.Item>
+              <Form.Item hidden name={'certificate_content'}>
+                <Input/>
+              </Form.Item>
 
               <ProFormUploadButton
                 name="certificate_filename"

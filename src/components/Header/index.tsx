@@ -20,7 +20,7 @@ const LnHeader: React.FC = () => {
       </Space>
 
       <Space className={styles.rightContent}>
-        <SelectLang className={styles.action} />
+        {/*<SelectLang className={styles.action} />*/}
       </Space>
     </div>
   );
