@@ -1,4 +1,8 @@
 export default {
+  'menu.1': '节点信息',
+  'menu.2': '磁盘信息',
+  'menu.3': '集群信息',
+  'menu.4': '部署状态',
   'menu.login': '登录',
   'menu.wizard': '配置向导',
   'menu.dashboard': '信息板',

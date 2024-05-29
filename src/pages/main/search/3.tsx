@@ -45,7 +45,7 @@ const Three = (props) => {
       try {
         const res: any = await appSetupApiMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         console.log(res)
-        if ((res as any).code == "0") {
+        if ((res as any).success) {
           message.success(res?.msg);
           history.push('4')
           return true;
@@ -53,7 +53,6 @@ const Three = (props) => {
         message.error(res?.msg);
         return false;
       } catch (error) {
-        message.error(error);
         return false;
       }
     }

@@ -29,21 +29,65 @@ const queryCurrentUser = () => {
   });
 };
 
-const AuthHeaderInterceptor = (url: string, options: any) => {
-  const token = window.localStorage.getItem('token');
-  const lang = getLocale();
-  const traceid = uuidv4().substr(0, 12);
-  const authHeader = {
-    Authorization: `Bearer ${token}`,
-    'api-version': '2.0',
-    'api-lang': lang,
-    'source-type': 'ui',
-    'X-Trace-Id': `F-${traceid}`,
-  };
-  return {
-    url: `${url}`,
-    options: { ...options, interceptors: true, headers: authHeader },
-  };
+export const request: RequestConfig = {
+  getResponse: true,
+  skipErrorHandler: true,
+  middlewares: [
+    async (ctx: Context, next: () => void) => {
+      await next();
+      if (ctx.req.options.parseResponse === false) {
+        return;
+      }
+      const { data, response } = ctx.res;
+      const showtype = response.headers.get('showtype');
+      const { code, msg } = data;
+      const success = code === '0';
+      if (showtype === null) {
+        ctx.res = { ...data, success, message, notification };
+      } else {
+        showMessage(+showtype, msg, code);
+        ctx.res = { ...data, success, message: null, notification: null };
+      }
+    },
+  ],
+  errorHandler: (error: ResponseError) => {
+    const { response, data } = error;
+    const status = response && response.status ? response.status : -1;
+    if (status >= 400 && ![401, 403].includes(status)) {
+      const description = data ? JSON.stringify(data) : 'Request error, please retry.';
+      if (status === 429) {
+        // 登录锁定时间是个变化值，需从返回值中提取
+        const numbers = data?.detail.match(/\d+/g);
+        notification.error({
+          message: getIntl().formatMessage(
+            { id: 'pages.login.failure.lock' },
+            { numbers: numbers[0] },
+          ),
+        });
+      } else if (status === 404) {
+        notification.error({
+          message: getIntl().formatMessage({ id: 'pages.404Error' }),
+        });
+      } else if (status === 500) {
+        notification.error({
+          message: getIntl().formatMessage({ id: 'pages.500Error' }),
+          description: getIntl().formatMessage({ id: 'pages.tryLater' }),
+        });
+      } else if (status === 504) {
+        notification.error({
+          message: getIntl().formatMessage({ id: 'pages.504Error' }),
+          description: getIntl().formatMessage({ id: 'pages.tryLater' }),
+        });
+      } else {
+        notification.error({
+          message: `${status} ${response.statusText}`,
+          description,
+        });
+      }
+    } else {
+      throw error;
+    }
+  },
 };
 
 // fix dynamically redirect due to pending deployMode, it invokes everytime change route
