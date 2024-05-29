@@ -16,7 +16,7 @@ import {
   appSetupApiGetTerraSearchDeployResultGet,
   appSetupApiGetMagnascaleClusterInfo,
 } from "@/services/dsm/terraSearchDeploy";
-
+let timeId;
 const { Paragraph } = Typography;
 const Four = (props) => {
   const [form] = Form.useForm();
@@ -24,7 +24,7 @@ const Four = (props) => {
   const [result, setResult] = useState<any>({})
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await appSetupApiGetTerraSearchDeployResultGet({});
+    const res: any = await appSetupApiGetTerraSearchDeployResultGet({});
     setIsLoading(false)
     setResult(res.data)
   };
@@ -33,26 +33,14 @@ const Four = (props) => {
     getInitData()
   }, [])
 
-  const onFinish = async (values) => {
-
-    const reader = new FileReader();
-    reader.readAsText(values.certificate_filename?.[0].originFileObj);
-    reader.onloadend = async (e: any) => {
-      try {
-        const res: any = await appSetupApiGetMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
-        if ((res as any).success) {
-          message.success(res?.msg);
-          return true;
-        }
-        message.error(res?.msg);
-        return false;
-      } catch (error) {
-        return false;
-      }
+  useEffect(()=>{
+    if(result.status === `doing`){
+      timeId = setInterval(()=>getInitData(), 3000)
+    }else{
+      clearInterval(timeId)
     }
-    history.push('4')
-  }
-
+  }, [result.status])
+  
   const reDeploy = () => {
     history.push(`1`)
   }
