@@ -3,7 +3,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled } from '@ant-design/icons';
-import {Button, Modal, Space, Spin} from "antd";
+import {Button, message, Modal, Space, Spin} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 import { formatUnit } from '@/utils/format'
 
@@ -74,16 +74,26 @@ const Two = (props) => {
   }
   
   const next = () => {
-    const hostsSizeSet = 
+    const disksChecked = hosts.map(
+      host => host.disks.filter(disk => disk.checked)
+    ).flat()
+    const disksTypeSet =
       new Set(
-        hosts.map(
-          host => host.disks.filter(disk => disk.checked)
-            .map(disk => formatUnit(disk.size))
-        )
-          .flat()
+        disksChecked
+          .map(disk => disk.disk_type)
       );
-    console.log(hostsSizeSet)
-    if (hostsSizeSet.size > 1) {
+    console.log(disksTypeSet)
+    if (disksTypeSet.size > 1) {
+      message.error(`请选择类型相同的数据盘`)
+      return
+    }
+    const disksSizeSet = 
+      new Set(
+        disksChecked
+          .map(disk => formatUnit(disk.size))
+      );
+    console.log(disksSizeSet)
+    if (disksSizeSet.size > 1) {
       confirm({
         title: '提示',
         content: '容量不一致会导致数据不均衡',
