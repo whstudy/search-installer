@@ -85,7 +85,7 @@ const Four = (props) => {
               <div className={styles.numText}>2</div>
               <div className={styles.descText}>
                 请点击
-                <a className={styles.link}>https://10.128.128.99:808</a>
+                <a href={`https://10.128.128.99:808`} target="_blank" className={styles.link}>https://10.128.128.99:808</a>
                 进行对象检索
               </div>
             </div>

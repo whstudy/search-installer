@@ -44,17 +44,19 @@ const Three = (props) => {
     reader.onloadend = async (e: any) => {
       try {
         const res: any = await appSetupApiMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
-        if ((res as any).success) {
+        console.log(res)
+        if ((res as any).code == "0") {
           message.success(res?.msg);
+          history.push('4')
           return true;
         }
         message.error(res?.msg);
         return false;
       } catch (error) {
+        message.error(error);
         return false;
       }
     }
-    history.push('4')
   }
 
   const up = () => {
