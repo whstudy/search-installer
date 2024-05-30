@@ -2,7 +2,7 @@ import { FormattedMessage, history } from 'umi';
 import React, {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
-import {CheckCircleFilled } from '@ant-design/icons';
+import {CheckCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import {Button, message, Modal, Space, Spin} from "antd";
 import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
 import { formatUnit } from '@/utils/format'
@@ -117,9 +117,15 @@ const Two = (props) => {
       <ProCard
         className={styles.searcprohListTop}
         title={
-          <div className={styles.demoTitleDiv}>
-            首先，添加检索服务节点
-          </div>
+          <>
+            <div className={styles.demoTitleDiv}>
+              选择数据盘
+            </div>
+            <div className={styles.tooltip}>
+              <ExclamationCircleOutlined className={styles.tooltipIcon} />
+              为保证性能稳定和数据均衡，请选择类型相同、容量相同的数据盘
+            </div>
+          </>
         }
       >
         <div className={styles.nodeContainer}>

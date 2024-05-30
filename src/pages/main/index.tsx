@@ -17,7 +17,7 @@ const Index: React.FC = (props) => {
     const res = await appSetupTerraSearchStepGet({});
     setStepInfo(res.data)
     console.log(res)
-    history.push(`${res?.data?.current_step}`)
+    // history.push(`${res?.data?.current_step}`)
   };
   
   useEffect(()=>{
