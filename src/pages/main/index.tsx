@@ -9,6 +9,7 @@ const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
 
 const Index: React.FC = (props) => {
+  const routesStep = [`/one`, `/two`, `/three`, `/four`]
   const location = useLocation();
   const history = useHistory();
   const [stepInfo, setStepInfo] = useState<any>({})
@@ -43,10 +44,9 @@ const Index: React.FC = (props) => {
             <div className={styles.siderTitle}>
               检索服务部署
             </div>
-
             <Steps
               direction="vertical"
-              current={Number(location.pathname.substr(1))-1}
+              current={routesStep.indexOf(location.pathname)}
               className={styles.steps}
             >
               {

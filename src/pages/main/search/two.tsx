@@ -70,7 +70,7 @@ const Two = (props) => {
   const submitDisk = async () => {
     const res = await appSetupTerraSearchDisk(hosts);
     console.log(res)
-    history.push('3')
+    history.push('three')
   }
   
   const next = () => {
@@ -109,7 +109,7 @@ const Two = (props) => {
   }
 
   const up = () => {
-    history.push('1')
+    history.push('one')
   }
   
   return (

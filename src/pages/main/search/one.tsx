@@ -33,7 +33,7 @@ const One = (props) => {
   const onFinish = async (values) => {
     const res = await appSetupTerraSearchClusterNode(values);
     console.log(res)
-    history.push('2')
+    history.push('two')
   }
 
   return (

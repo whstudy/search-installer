@@ -47,7 +47,7 @@ const Three = (props) => {
         console.log(res)
         if ((res as any).success) {
           message.success(res?.msg);
-          history.push('4')
+          history.push('four')
           return true;
         }
         message.error(res?.msg);
@@ -59,7 +59,7 @@ const Three = (props) => {
   }
 
   const up = () => {
-    history.push('2')
+    history.push('two')
   }
   
   return (

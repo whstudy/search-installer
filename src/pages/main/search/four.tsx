@@ -45,7 +45,7 @@ const Four = (props) => {
   }, [result.status])
   
   const reDeploy = () => {
-    history.push(`1`)
+    history.push(`one`)
   }
   
   return (
