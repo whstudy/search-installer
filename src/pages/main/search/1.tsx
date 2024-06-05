@@ -75,7 +75,7 @@ const One = (props) => {
                       </Form.Item>
                     
                     <Form.Item label={'节点IP'} name={'ip_address'}>
-                      {form.getFieldValue('deploy_mode') === `standard` ? <Input.TextArea rows={4} placeholder={`3≤节点数量≤10`}/> : <Input placeholder={`请输入一个节点IP`}/>}
+                      {form.getFieldValue('deploy_mode') === `standard` ? <Input.TextArea rows={4} placeholder={`节点数量≥3`}/> : <Input placeholder={`请输入一个节点IP`}/>}
                     </Form.Item>
                   </>
                 )}
@@ -89,6 +89,19 @@ const One = (props) => {
                 <Input/>
               </Form.Item>
 
+              <Form.Item noStyle dependencies={['deploy_mode']}>
+                {() => (
+                  <>
+                    {
+                      form.getFieldValue('deploy_mode') === `standard` &&
+                      <Form.Item label={'检索集群VIP'} name={'vip'}>
+                        <Input placeholder={`请输入检索集群访问地址`}/>
+                      </Form.Item>
+                    }
+                  </>
+                )}
+              </Form.Item>
+              
               <Space className={styles.btnGroup}>
                 <Form.Item>
                   <Button type="primary" htmlType="submit">
