@@ -16,6 +16,7 @@ import {
   appSetupApiGetTerraSearchDeployResultGet,
   appSetupApiGetMagnascaleClusterInfo, appSetupApiMagnascaleClusterInfoGet,
 } from "@/services/dsm/terraSearchDeploy";
+import { FileTextOutlined } from '@ant-design/icons';
 let timeId;
 const { Paragraph } = Typography;
 const Four = (props) => {
@@ -67,12 +68,31 @@ const Four = (props) => {
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>1</div>
               <div className={styles.descText}>
+                <div>
+                  下载检索集群证书
+                  <div className={styles.crtDownload}>
+                    <FileTextOutlined className={styles.icon} />
+                    <div>
+                      <div>
+                        terrasearch. crt
+                      </div>
+                      <div>
+                        <a target="_blank" href={`/dsm/object/download/`}>下载证书</a>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.succeedDesc}>
+              <div className={styles.numText}>2</div>
+              <div className={styles.descText}>
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
                 <Paragraph copyable>{clusterInfo.domain_name}</Paragraph>
               </div>
             </div>
             <div className={styles.succeedDesc}>
-              <div className={styles.numText}>2</div>
+              <div className={styles.numText}>3</div>
               <div className={styles.descText}>
                 请点击
                 <a href={result.terra_search_app_address} target="_blank" className={styles.link}>{result.terra_search_app_address}</a>

@@ -20,7 +20,6 @@
 // const target = 'https://10.128.134.71/'; // 4.0 stage BVT
 // const target = 'https://10.128.134.25/'; // 4.0 product BVT
 
-const target = 'https://mock.apifox.com/m1/1459334-0-default/'; // product BVT
 // const target = 'http://192.168.71.43:8080/'; // product BVT
 // const target = 'http://10.128.101.104:5001/'; // 4.0 product BVT
 // const target = 'http://10.128.131.78:5001/'; // 4.0 product BVT
@@ -60,8 +59,16 @@ const target = 'https://mock.apifox.com/m1/1459334-0-default/'; // product BVT
 
 // const target = 'https://10.128.138.135/'; // product BVT
 
+const target = 'https://mock.apipark.cn/m1/1459334-0-default/'; // product BVT
+
 export default {
   dev: {
+    '/dsm/': {
+      target,
+      changeOrigin: true,
+      secure: false,
+      logLevel: 'debug',
+    },
     '/app_setup/': {
       target,
       changeOrigin: true,
