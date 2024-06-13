@@ -12,10 +12,8 @@ const LnHeader: React.FC = () => {
     <div className={styles.header}>
       <Space className={styles.lef}>
         <div className={styles.header_logo} id="logo">
-          Lenovo Installer
-          {/*<a>
-            <img src="/logo.svg" alt="logo" />
-          </a>*/}
+          <img src="/lenovo-white.svg" alt="logo" />
+          <div>TerraSearch Installer</div>
         </div>
         {/*<div className={styles.featureName}>installer</div>*/}
       </Space>
