@@ -89,7 +89,7 @@ const Four = (props) => {
               <div className={styles.descText}>
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
                 <Paragraph copyable={{
-                  icon: [<a className={styles.linkBtn}>复制</a>]
+                  icon: [<a className={`${styles.linkBtn} m-l-6`}>复制</a>, <a className={`${styles.linkBtn} m-l-6`}>复制</a>]
                 }}>{clusterInfo.domain_name}</Paragraph>
               </div>
             </div>
