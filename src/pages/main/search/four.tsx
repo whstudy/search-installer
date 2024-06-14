@@ -77,7 +77,7 @@ const Four = (props) => {
                         terrasearch. crt
                       </div>
                       <div>
-                        <a target="_blank" href={`/dsm/object/download/`}>下载证书</a>  
+                        <a className={styles.linkBtn} target="_blank" href={`/dsm/object/download/`}>下载证书</a>  
                       </div>
                     </div>
                   </div>
@@ -88,14 +88,16 @@ const Four = (props) => {
               <div className={styles.numText}>2</div>
               <div className={styles.descText}>
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
-                <Paragraph copyable>{clusterInfo.domain_name}</Paragraph>
+                <Paragraph copyable={{
+                  icon: [<a className={styles.linkBtn}>复制</a>]
+                }}>{clusterInfo.domain_name}</Paragraph>
               </div>
             </div>
             <div className={styles.succeedDesc}>
               <div className={styles.numText}>3</div>
               <div className={styles.descText}>
-                请点击
-                <a href={result.terra_search_app_address} target="_blank" className={styles.link}>{result.terra_search_app_address}</a>
+                请
+                <a href={result.terra_search_app_address} target="_blank" className={styles.link}>点击{result.terra_search_app_address}</a>
                 进行对象检索
               </div>
             </div>
