@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Two from './two';
+import Disk from './disk';
 
 type routeProps = {
   taskStatus: any;
@@ -17,7 +17,7 @@ const Searchs: React.FC<routeProps> = ({
   const [statusTitleVal, setStatusTitleVal] = useState({});
   return (
     
-      <Two
+      <Disk
         statusStatisticChange={(items) => {
         }}
         statusTitleVal={statusTitleVal}

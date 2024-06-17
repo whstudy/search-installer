@@ -11,18 +11,15 @@ import React, {  useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import { ProFormUploadButton } from '@ant-design/pro-form';
-import {
-  appSetupApiMagnascaleClusterInfoGet,
-  appSetupApiMagnascaleClusterInfo,
-} from "@/services/dsm/terraSearchDeploy";
+import {apiDeployTerraSearchClusterMagnascaleClusterInfoGet, apiDeployTerraSearchClusterMagnascaleClusterInfo} from "@/services/dsm/DXN";
 
 
-const Three = (props) => {
+const Cluster = (props) => {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await appSetupApiMagnascaleClusterInfoGet({});
+    const res = await apiDeployTerraSearchClusterMagnascaleClusterInfoGet({});
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
@@ -43,11 +40,11 @@ const Three = (props) => {
     reader.readAsText(values.certificate_filename?.[0].originFileObj);
     reader.onloadend = async (e: any) => {
       try {
-        const res: any = await appSetupApiMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
+        const res: any = await apiDeployTerraSearchClusterMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         console.log(res)
         if ((res as any).success) {
           message.success(res?.msg);
-          history.push('four')
+          history.push('deploy')
           return true;
         }
         message.error(res?.msg);
@@ -59,7 +56,7 @@ const Three = (props) => {
   }
 
   const up = () => {
-    history.push('two')
+    history.push('disk')
   }
   
   return (
@@ -132,4 +129,4 @@ const Three = (props) => {
     </Spin>
   );
 };
-export default Three;
+export default Cluster;

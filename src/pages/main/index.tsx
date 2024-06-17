@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { Layout, Steps } from 'antd';
-import {appSetupTerraSearchStepGet} from '@/services/dsm/terraSearchDeploy';
+import {apiDeployTerraSearchStepGet} from '@/services/dsm/Deploy';
 import LnHeader from '@/components/Header';
-import { useLocation, useHistory } from 'umi';
+import { useLocation } from 'umi';
 
 const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
 
 const Index: React.FC = (props) => {
-  const routesStep = [`/one`, `/two`, `/three`, `/four`]
+  const routesStep = [`/node`, `/disk`, `/cluster`, `/deploy`]
   const location = useLocation();
-  const history = useHistory();
   const [stepInfo, setStepInfo] = useState<any>({})
   
   const getInitData = async () => {
-    const res = await appSetupTerraSearchStepGet({});
+    const res = await apiDeployTerraSearchStepGet({});
     setStepInfo(res.data)
     console.log(res)
     // history.push(`${res?.data?.current_step}`)

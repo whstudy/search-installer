@@ -4,12 +4,12 @@ import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import {Button, message, Modal, Space, Spin} from "antd";
-import {appSetupTerraSearchDisk, appSetupTerraSearchDiskGet} from '@/services/dsm/terraSearchDeploy';
+import {apiDeployTerraSearchNodesDiskGet, apiDeployTerraSearchNodesDisk} from '@/services/dsm/Disks';
 import { formatUnit } from '@/utils/format'
 
 const { confirm } = Modal;
 
-const Two = (props) => {
+const Disk = (props) => {
   // const intl = useIntl();
   const options: any = [];
   for (let i = 10; i < 36; i++) {
@@ -20,33 +20,12 @@ const Two = (props) => {
   }
   
   const [hosts, setHosts] = useState<any[]>([])
-  
-  /*useEffect(()=>{
-    const _hosts: any = []
-    for(let i=0; i < 12; i++){
-      const _disks: any = []
-      let _j = 200
-      if(i === 0)
-        _j = 3
-      for(let j=0; j < _j; j++){
-        _disks.push({
-          id: j,
-        })
-      }
-      _hosts.push({
-        id: `${i}.${i}.${i}.${i}`,
-        disks: _disks,
-      })
-    }
-    console.log(_hosts)
-    setHosts(_hosts)
-  }, [])*/
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await appSetupTerraSearchDiskGet({});
+    const res = await apiDeployTerraSearchNodesDiskGet({});
     setHosts(res.data)
     setIsLoading(false)
     console.log(res)
@@ -68,9 +47,9 @@ const Two = (props) => {
   , [])
   
   const submitDisk = async () => {
-    const res = await appSetupTerraSearchDisk(hosts);
+    const res = await apiDeployTerraSearchNodesDisk(hosts);
     console.log(res)
-    history.push('three')
+    history.push('cluster')
   }
   
   const next = () => {
@@ -109,7 +88,7 @@ const Two = (props) => {
   }
 
   const up = () => {
-    history.push('one')
+    history.push('node')
   }
   
   return (
@@ -159,4 +138,4 @@ const Two = (props) => {
     </Spin>
   );
 };
-export default Two;
+export default Disk;

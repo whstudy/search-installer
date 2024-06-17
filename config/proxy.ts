@@ -63,25 +63,7 @@ const target = 'https://mock.apipark.cn/m1/1459334-0-default/'; // product BVT
 
 export default {
   dev: {
-    '/dsm/': {
-      target,
-      changeOrigin: true,
-      secure: false,
-      logLevel: 'debug',
-    },
-    '/app_setup/': {
-      target,
-      changeOrigin: true,
-      secure: false,
-      logLevel: 'debug',
-    },
-    '/portal/': {
-      target,
-      changeOrigin: true,
-      secure: false,
-      logLevel: 'debug',
-    },
-    '/ui/': {
+    '/api/': {
       target,
       changeOrigin: true,
       secure: false,

@@ -10,16 +10,16 @@ import {Access, history } from "umi";
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
-import {appSetupTerraSearchClusterNode, appSetupTerraSearchClusterNodeGet} from "@/services/dsm/terraSearchDeploy";
+import {apiDeployTerraSearchClusterConfigGet, apiDeployTerraSearchClusterConfig} from "@/services/dsm/Nodes";
 
-const One = (props) => {
+const Node = (props) => {
   const [form] = Form.useForm();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await appSetupTerraSearchClusterNodeGet({});
+    const res = await apiDeployTerraSearchClusterConfigGet({});
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
@@ -31,9 +31,9 @@ const One = (props) => {
   }, [])
 
   const onFinish = async (values) => {
-    const res = await appSetupTerraSearchClusterNode(values);
+    const res = await apiDeployTerraSearchClusterConfig(values);
     console.log(res)
-    history.push('two')
+    history.push('disk')
   }
 
   return (
@@ -74,7 +74,7 @@ const One = (props) => {
                         {form.getFieldValue('deploy_mode') === `standard` ? `标准部署的确可以支持部署在3到10个节点上，这种部署方式通常用于较大规模的检索集群，以提供更高的性能和可靠性` : `快速部署支持单节点部署，这种部署方式通常能够帮助客户在资源有限的情况下快速部署检索服务`}
                       </Form.Item>
                     
-                    <Form.Item label={'节点IP'} name={'ip_address'}>
+                    <Form.Item label={'节点IP'} name={'ip_segments'}>
                       {form.getFieldValue('deploy_mode') === `standard` ? <Input.TextArea rows={4} placeholder={`节点数量≥3`}/> : <Input placeholder={`请输入一个节点IP`}/>}
                     </Form.Item>
                   </>
@@ -116,4 +116,4 @@ const One = (props) => {
     </Spin>
   );
 };
-export default One;
+export default Node;

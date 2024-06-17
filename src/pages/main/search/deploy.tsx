@@ -10,24 +10,16 @@ import {
 import {FormattedMessage, history} from "umi";
 import React, {  useState, useEffect } from 'react';
 import styles from './index.less';
-import ProCard from "@ant-design/pro-card";
-import { ProFormUploadButton } from '@ant-design/pro-form';
-import {
-  appSetupApiGetTerraSearchDeployResultGet,
-  appSetupApiGetMagnascaleClusterInfo, appSetupApiMagnascaleClusterInfoGet,
-} from "@/services/dsm/terraSearchDeploy";
+import {apiDeployTerraSearchGetDeployResultGet} from "@/services/dsm/Deploy";
 import { FileTextOutlined } from '@ant-design/icons';
 let timeId;
 const { Paragraph } = Typography;
-const Four = (props) => {
+const Deploy = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [result, setResult] = useState<any>({})
-  const [clusterInfo, setClusterInfo] = useState<any>({})
   const getInitData = async () => {
     setIsLoading(true)
-    const res: any = await appSetupApiGetTerraSearchDeployResultGet({});
-    const clusterInfoRes = await appSetupApiMagnascaleClusterInfoGet({});
-    setClusterInfo(clusterInfoRes.data)
+    const res: any = await apiDeployTerraSearchGetDeployResultGet({});
     setIsLoading(false)
     setResult(res.data)
   };
@@ -45,13 +37,13 @@ const Four = (props) => {
   }, [result.status])
   
   const reDeploy = () => {
-    history.push(`one`)
+    history.push(`node`)
   }
   
   return (
     <Spin spinning={isLoading}>
       <div
-        className={styles.four}
+        className={styles.deploy}
       >
         {result.status && <img src={require(`@/assets/${result.status}.svg`)}/>}
         {result.status === `doing` && <>
@@ -77,7 +69,7 @@ const Four = (props) => {
                         terrasearch. crt
                       </div>
                       <div>
-                        <a className={styles.linkBtn} target="_blank" href={`/dsm/object/download/`}>下载证书</a>  
+                        <a className={styles.linkBtn} target="_blank" href={result.certificate_file}>下载证书</a>  
                       </div>
                     </div>
                   </div>
@@ -90,7 +82,7 @@ const Four = (props) => {
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
                 <Paragraph copyable={{
                   icon: [<a className={`${styles.linkBtn} m-l-6`}>复制</a>, <a className={`${styles.linkBtn} ${styles.linkBtnDone} m-l-6`}>复制</a>]
-                }}>{clusterInfo.domain_name}</Paragraph>
+                }}>{result.terra_search_address}</Paragraph>
               </div>
             </div>
             <div className={styles.succeedDesc}>
@@ -107,4 +99,4 @@ const Four = (props) => {
     </Spin>
   );
 };
-export default Four;
+export default Deploy;
