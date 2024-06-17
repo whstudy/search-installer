@@ -3,7 +3,7 @@ import styles from './index.less';
 import { Layout, Steps } from 'antd';
 import {apiDeployTerraSearchStepGet} from '@/services/dsm/Deploy';
 import LnHeader from '@/components/Header';
-import { useLocation } from 'umi';
+import {useHistory, useLocation } from 'umi';
 
 const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
@@ -11,13 +11,14 @@ const { Step } = Steps;
 const Index: React.FC = (props) => {
   const routesStep = [`/node`, `/disk`, `/cluster`, `/deploy`]
   const location = useLocation();
+  const history = useHistory();
   const [stepInfo, setStepInfo] = useState<any>({})
   
   const getInitData = async () => {
     const res = await apiDeployTerraSearchStepGet({});
     setStepInfo(res.data)
     console.log(res)
-    // history.push(`${res?.data?.current_step}`)
+    history.push(routesStep[res?.data?.current_step||0])
   };
   
   useEffect(()=>{
