@@ -93,6 +93,7 @@ const Three = (props) => {
               </Form.Item>
 
               <ProFormUploadButton
+                accept={`.crt`}
                 name="certificate_filename"
                 label={`导入证书`}
                 title={`导入证书`}
