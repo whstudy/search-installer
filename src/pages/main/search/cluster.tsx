@@ -7,7 +7,7 @@ import {
   message
 } from 'antd';
 import {FormattedMessage, history} from "umi";
-import React, {  useState, useEffect } from 'react';
+import {  useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import { ProFormUploadButton } from '@ant-design/pro-form';

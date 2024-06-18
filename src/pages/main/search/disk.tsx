@@ -1,5 +1,5 @@
-import { FormattedMessage, history } from 'umi';
-import React, {useState, useEffect, useCallback} from 'react';
+import { history } from 'umi';
+import {useState, useEffect, useCallback} from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -26,7 +26,7 @@ const Disk = (props) => {
   const getInitData = async () => {
     setIsLoading(true)
     const res = await apiDeployTerraSearchNodesDiskGet({});
-    setHosts(res.data)
+    setHosts(res?.data||[])
     setIsLoading(false)
     console.log(res)
   };
@@ -48,8 +48,13 @@ const Disk = (props) => {
   
   const submitDisk = async () => {
     const res = await apiDeployTerraSearchNodesDisk(hosts);
-    console.log(res)
-    history.push('cluster')
+    if ((res as any).success) {
+      message.success(res?.msg);
+      history.push('cluster')
+      return true;
+    }
+    message.error(res?.msg);
+    return false
   }
   
   const next = () => {

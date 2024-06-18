@@ -1,14 +1,10 @@
 import {
   Button,
-  Form,
-  Input,
-  Space,
   Spin,
-  message,
   Typography
 } from 'antd';
-import {FormattedMessage, history} from "umi";
-import React, {  useState, useEffect } from 'react';
+import {history} from "umi";
+import {  useState, useEffect } from 'react';
 import styles from './index.less';
 import {apiDeployTerraSearchGetDeployResultGet} from "@/services/dsm/Deploy";
 import { FileTextOutlined } from '@ant-design/icons';

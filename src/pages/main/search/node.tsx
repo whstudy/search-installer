@@ -4,10 +4,10 @@ import {
   Input,
   Space,
   Radio,
-  Spin
+  Spin, message
 } from 'antd';
-import {Access, history } from "umi";
-import React, { useRef, useState, useEffect } from 'react';
+import {history } from "umi";
+import { useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {apiDeployTerraSearchClusterConfigGet, apiDeployTerraSearchClusterConfig} from "@/services/dsm/Nodes";
@@ -32,8 +32,13 @@ const Node = (props) => {
 
   const onFinish = async (values) => {
     const res = await apiDeployTerraSearchClusterConfig(values);
-    console.log(res)
-    history.push('disk')
+    if ((res as any).success) {
+      message.success(res?.msg);
+      history.push('disk')
+      return true;
+    }
+    message.error(res?.msg);
+    return false
   }
 
   return (
