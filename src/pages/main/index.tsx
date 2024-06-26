@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { Layout, Steps } from 'antd';
-import {apiDeployTerraSearchStepGet} from '@/services/dsm/Deploy';
+import {apiTerraSearchDeployStepGet} from '@/services/dsm/Deploy';
 import LnHeader from '@/components/Header';
 import {useHistory, useLocation } from 'umi';
 
@@ -9,13 +9,14 @@ const { Header, Sider, Content } = Layout;
 const { Step } = Steps;
 
 const Index: React.FC = (props) => {
+  const routesStepCn = [`添加节点`, `选择数据盘`, `存储集群信息`, `检索服务部署`]
   const routesStep = [`/node`, `/disk`, `/cluster`, `/deploy`]
   const location = useLocation();
   const history = useHistory();
   const [stepInfo, setStepInfo] = useState<any>({})
   
   const getInitData = async () => {
-    const res = await apiDeployTerraSearchStepGet({});
+    const res = await apiTerraSearchDeployStepGet({});
     setStepInfo(res.data)
     console.log(res)
     history.push(routesStep[res?.data?.current_step||0])
@@ -50,7 +51,7 @@ const Index: React.FC = (props) => {
               className={styles.steps}
             >
               {
-                stepInfo?.all_step?.map(
+                routesStepCn?.map(
                   (o) => <Step key={o} title={o}/>
                 )
               }

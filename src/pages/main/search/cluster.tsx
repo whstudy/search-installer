@@ -11,7 +11,7 @@ import {  useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import { ProFormUploadButton } from '@ant-design/pro-form';
-import {apiDeployTerraSearchClusterMagnascaleClusterInfoGet, apiDeployTerraSearchClusterMagnascaleClusterInfo} from "@/services/dsm/DXN";
+import {apiTerraSearchDeployStorageConfigGet, apiTerraSearchDeployStorageConfig} from "@/services/dsm/Storage";
 
 
 const Cluster = (props) => {
@@ -19,7 +19,7 @@ const Cluster = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await apiDeployTerraSearchClusterMagnascaleClusterInfoGet({});
+    const res = await apiTerraSearchDeployStorageConfigGet({});
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
@@ -40,7 +40,7 @@ const Cluster = (props) => {
     reader.readAsText(values.certificate_filename?.[0].originFileObj);
     reader.onloadend = async (e: any) => {
       try {
-        const res: any = await apiDeployTerraSearchClusterMagnascaleClusterInfo({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
+        const res: any = await apiTerraSearchDeployStorageConfig({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         console.log(res)
         if ((res as any).success) {
           message.success(res?.msg);

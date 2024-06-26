@@ -4,7 +4,7 @@ import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
 import {CheckCircleFilled, ExclamationCircleOutlined } from '@ant-design/icons';
 import {Button, message, Modal, Space, Spin} from "antd";
-import {apiDeployTerraSearchNodesDiskGet, apiDeployTerraSearchNodesDisk} from '@/services/dsm/Disks';
+import {apiTerraSearchDeployNodeGet, apiTerraSearchDeployNode} from '@/services/dsm/Node';
 import { formatUnit } from '@/utils/format'
 
 const { confirm } = Modal;
@@ -25,7 +25,7 @@ const Disk = (props) => {
   
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await apiDeployTerraSearchNodesDiskGet({});
+    const res = await apiTerraSearchDeployNodeGet({});
     setHosts(res?.data||[])
     setIsLoading(false)
     console.log(res)
@@ -47,7 +47,7 @@ const Disk = (props) => {
   , [])
   
   const submitDisk = async () => {
-    const res = await apiDeployTerraSearchNodesDisk(hosts);
+    const res = await apiTerraSearchDeployNode(hosts);
     if ((res as any).success) {
       message.success(res?.msg);
       history.push('cluster')

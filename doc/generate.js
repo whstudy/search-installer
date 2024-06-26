@@ -18,7 +18,8 @@ function getGitBranchName() {
 const branchName = getGitBranchName();
 console.log('本地当前分支名:', branchName);
 
-const swaggerUrl = `http://10.128.134.127:8000/swagger/dsm-swagger/-/raw/${process.argv[2]||branchName}/main.yaml`
+// const swaggerUrl = `http://10.128.134.127:8000/swagger/dsm-swagger/-/raw/${process.argv[2]||branchName}/main.yaml`
+const swaggerUrl = `doc/swagger.yaml`
 console.log(`swagger地址`, swaggerUrl)
 
 try {

@@ -6,7 +6,7 @@ import {
 import {history} from "umi";
 import {  useState, useEffect } from 'react';
 import styles from './index.less';
-import {apiDeployTerraSearchGetDeployResultGet} from "@/services/dsm/Deploy";
+import {apiTerraSearchDeployProgressGet} from "@/services/dsm/Deploy";
 import { FileTextOutlined } from '@ant-design/icons';
 let timeId;
 const { Paragraph } = Typography;
@@ -15,7 +15,7 @@ const Deploy = (props) => {
   const [result, setResult] = useState<any>({})
   const getInitData = async () => {
     setIsLoading(true)
-    const res: any = await apiDeployTerraSearchGetDeployResultGet({});
+    const res: any = await apiTerraSearchDeployProgressGet({});
     setIsLoading(false)
     setResult(res.data)
   };

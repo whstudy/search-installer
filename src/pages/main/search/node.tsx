@@ -10,7 +10,7 @@ import {history } from "umi";
 import { useState, useEffect } from 'react';
 import styles from './index.less';
 import ProCard from "@ant-design/pro-card";
-import {apiDeployTerraSearchClusterConfigGet, apiDeployTerraSearchClusterConfig} from "@/services/dsm/Nodes";
+import {apiTerraSearchDeployClusterConfigGet, apiTerraSearchDeployClusterConfig} from "@/services/dsm/Cluster";
 
 const Node = (props) => {
   const [form] = Form.useForm();
@@ -19,7 +19,7 @@ const Node = (props) => {
   
   const getInitData = async () => {
     setIsLoading(true)
-    const res = await apiDeployTerraSearchClusterConfigGet({});
+    const res = await apiTerraSearchDeployClusterConfigGet({});
     setIsLoading(false)
     form?.setFieldsValue({
       ...res.data,
@@ -31,7 +31,7 @@ const Node = (props) => {
   }, [])
 
   const onFinish = async (values) => {
-    const res = await apiDeployTerraSearchClusterConfig(values);
+    const res = await apiTerraSearchDeployClusterConfig(values);
     if ((res as any).success) {
       message.success(res?.msg);
       history.push('disk')
