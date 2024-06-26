@@ -35,13 +35,13 @@ const Deploy = (props) => {
   const reDeploy = () => {
     history.push(`node`)
   }
-  
+  const statusMap = [ `deploying`, `success`, `failed` ]
   return (
     <Spin spinning={isLoading}>
       <div
         className={styles.deploy}
       >
-        {result.status && <img src={require(`@/assets/${result.status}.svg`)}/>}
+        {(result.status&&statusMap.includes(result.status)) && <img src={require(`@/assets/${result.status}.svg`)}/>}
         {result.status === `doing` && <>
           <div className={styles.doing}>正在部署检索服务...</div>
         </>}
@@ -50,10 +50,10 @@ const Deploy = (props) => {
           <div className={styles.failedDesc}>失败原因：{result.failed_reason}</div>
           <Button onClick={reDeploy}>重新部署</Button>
         </>}
-        {result.status === `succeed` && <>
-          <div className={`${styles.doing} ${styles.succeed}`}>检索服务部署完成</div>
+        {result.status === `success` && <>
+          <div className={`${styles.doing} ${styles.success}`}>检索服务部署完成</div>
           <div>
-            <div className={styles.succeedDesc}>
+            <div className={styles.successDesc}>
               <div className={styles.numText}>1</div>
               <div className={styles.descText}>
                 <div>
@@ -62,7 +62,7 @@ const Deploy = (props) => {
                     <FileTextOutlined className={styles.icon} />
                     <div>
                       <div>
-                        terrasearch. crt
+                        {result.certificate_file}
                       </div>
                       <div>
                         <a className={styles.linkBtn} target="_blank" href={result.certificate_file}>下载证书</a>  
@@ -72,20 +72,20 @@ const Deploy = (props) => {
                 </div>
               </div>
             </div>
-            <div className={styles.succeedDesc}>
+            <div className={styles.successDesc}>
               <div className={styles.numText}>2</div>
               <div className={styles.descText}>
                 需要在MagnaScale管理平台“设置”页面中的“系统管理”去开启对象检索服务，开启时需输入检索集群地址：
                 <Paragraph copyable={{
                   icon: [<a className={`${styles.linkBtn} m-l-6`}>复制</a>, <a className={`${styles.linkBtn} ${styles.linkBtnDone} m-l-6`}>复制</a>]
-                }}>{result.terra_search_address}</Paragraph>
+                }}>{result.mgmt_uri}</Paragraph>
               </div>
             </div>
-            <div className={styles.succeedDesc}>
+            <div className={styles.successDesc}>
               <div className={styles.numText}>3</div>
               <div className={styles.descText}>
                 请
-                <a href={result.terra_search_app_address} target="_blank" className={styles.link}>点击{result.terra_search_app_address}</a>
+                <a href={result.app_uri} target="_blank" className={styles.link}>点击{result.app_uri}</a>
                 进行对象检索
               </div>
             </div>

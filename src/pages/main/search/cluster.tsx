@@ -43,7 +43,7 @@ const Cluster = (props) => {
         const res: any = await apiTerraSearchDeployStorageConfig({ ...values, certificate_filename: values.certificate_filename?.[0]?.name, certificate_content: e?.target?.result  });
         console.log(res)
         if ((res as any).success) {
-          message.success(res?.msg);
+          message.success(`提交成功`);
           history.push('deploy')
           return true;
         }
@@ -77,7 +77,7 @@ const Cluster = (props) => {
               form={form}
             >
 
-              <Form.Item label={'MagnaScale集群业务访问域名'} name={'domain_name'}>
+              <Form.Item label={'MagnaScale集群业务访问域名'} name={'domain'}>
                 <Input/>
               </Form.Item>
 

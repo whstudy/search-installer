@@ -33,7 +33,7 @@ const Node = (props) => {
   const onFinish = async (values) => {
     const res = await apiTerraSearchDeployClusterConfig(values);
     if ((res as any).success) {
-      message.success(res?.msg);
+      message.success(`提交成功`);
       history.push('disk')
       return true;
     }
@@ -58,7 +58,7 @@ const Node = (props) => {
               onFinish={onFinish}
               form={form}
             >
-              <Form.Item label={'部署配置'} name={'deploy_mode'}>
+              <Form.Item label={'部署配置'} name={'type'}>
                 <Radio.Group
                   size={'middle'}
                   style={{ width: '100%' }}
