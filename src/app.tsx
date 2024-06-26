@@ -40,13 +40,14 @@ export const request: RequestConfig = {
       }
       const { data, response } = ctx.res;
       const showtype = response.headers.get('showtype');
-      const { code, msg } = data;
+      const { msg } = data;
+      const code = data.error_code || '0'
       const success = code === '0';
       if (showtype === null) {
-        ctx.res = { ...data, success, message, notification };
+        ctx.res = { data, success, message, notification };
       } else {
         showMessage(+showtype, msg, code);
-        ctx.res = { ...data, success, message: null, notification: null };
+        ctx.res = { data, success, message: null, notification: null };
       }
     },
   ],

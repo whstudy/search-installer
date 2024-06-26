@@ -40,7 +40,7 @@ const Disk = (props) => {
       setHosts(prev =>
         prev.map(
           _node => node.ip_address === _node.ip_address ? {..._node, disks: _node.disks.map(
-            _disk => _disk.path === node.disk.path ? { ..._disk, checked: true } : { ..._disk, checked: false }
+            _disk => _disk.serial_number === node.disk.serial_number ? { ..._disk, is_selected: true } : { ..._disk, is_selected: false }
           )} : _node
         )
       )
@@ -49,7 +49,7 @@ const Disk = (props) => {
   const submitDisk = async () => {
     const res = await apiTerraSearchDeployNode(hosts);
     if ((res as any).success) {
-      message.success(res?.msg);
+      message.success(`提交成功`);
       history.push('cluster')
       return true;
     }
@@ -59,7 +59,7 @@ const Disk = (props) => {
   
   const next = () => {
     const disksChecked = hosts.map(
-      host => host.disks.filter(disk => disk.checked)
+      host => host.disks.filter(disk => disk.is_selected)
     ).flat()
     const disksTypeSet =
       new Set(
@@ -67,6 +67,10 @@ const Disk = (props) => {
           .map(disk => disk.disk_type)
       );
     console.log(disksTypeSet)
+    if (hosts.length !== disksChecked.length) {
+      message.error(`请选择数据盘`)
+      return
+    }
     if (disksTypeSet.size > 1) {
       message.error(`请选择类型相同的数据盘`)
       return
@@ -119,10 +123,10 @@ const Disk = (props) => {
             </div>
             <div className={styles.diskContainer}>
               {node.disks.map((disk)=><div 
-                key={disk.path} 
-                className={`${styles.disk} ${disk.checked&&styles.checked}`} 
+                key={disk.serial_number} 
+                className={`${styles.disk} ${disk.is_selected&&styles.checked}`} 
                 onClick={()=>checkDisk({ip_address: node.ip_address, disk: disk})}>
-                {disk.checked && <CheckCircleFilled className={styles.check}/>}
+                {disk.is_selected && <CheckCircleFilled className={styles.check}/>}
                 <div className={styles.diskIcon}>
                   <img src={require(`@/assets/${disk.disk_type}.svg`)} />
                 </div>

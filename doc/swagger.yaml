@@ -1,6 +1,6 @@
 components:
   schemas:
-    APIError:
+    APIParameterError:
       properties:
         error_code:
           example: 500
@@ -9,669 +9,20 @@ components:
           example: Parameter error!
           type: string
       required:
-      - error_code
-      - message
-      type: object
-    ClusterConfiguration:
-      properties:
-        cluster:
-          properties:
-            deploy_mode:
-              description: Deployment mode
-              properties:
-                nas:
-                  description: Whether NAS is deployed
-                  example: true
-                  required: true
-                  type: boolean
-                object:
-                  description: Whether object storage is deployed
-                  example: true
-                  required: true
-                  type: boolean
-              type: object
-            nas:
-              description: NAS configuration
-              properties:
-                is_bcache_enabled:
-                  description: Whether BCACHE is enabled
-                  example: true
-                  required: true
-                  type: boolean
-              type: object
-            network:
-              description: Network configuration
-              properties:
-                ntp:
-                  description: NTP configuration
-                  properties:
-                    external_servers:
-                      description: List of external NTP server addresses
-                      example: []
-                      items:
-                        type: string
-                      type: array
-                    internal_server:
-                      description: Internal NTP server address
-                      example: ntp.magnascale
-                      required: true
-                      type: string
-                    network_plane:
-                      description: Network plane
-                      example: mgmt
-                      required: true
-                      type: string
-                    synchronized_date_time_offset:
-                      description: Synchronized date time offset (seconds)
-                      example: 120
-                      required: true
-                      type: integer
-                    synchronized_timezone:
-                      description: Synchronized timezone
-                      example: Asia/Shanghai
-                      required: true
-                      type: string
-                  type: object
-              type: object
-            object:
-              description: Object storage configuration
-              properties:
-                is_cache_enabled:
-                  description: Whether cache is enabled
-                  example: false
-                  required: true
-                  type: boolean
-              type: object
-            vhost_number:
-              description: Number of virtual hosts
-              example: 1
-              required: true
-              type: integer
-          type: object
-        nodes:
-          description: List of node information
-          items:
-            properties:
-              bmc:
-                description: BMC address
-                example: 127.0.0.1/24
-                required: true
-                type: string
-              cpu_core:
-                description: Number of CPU cores
-                example: 8
-                required: true
-                type: integer
-              hdd_count:
-                description: Number of hard drives
-                example: 3
-                required: true
-                type: integer
-              hostname:
-                description: Hostname
-                example: node1
-                required: true
-                type: string
-              ip:
-                description: IP address
-                example: 10.128.136.221/24
-                required: true
-                type: string
-              nic_count:
-                description: Number of network interfaces
-                example: 3
-                required: true
-                type: integer
-              product_name:
-                description: Product name
-                example: VM
-                required: true
-                type: string
-              rack_name:
-                description: Rack information
-                example: rack_0
-                required: true
-                type: string
-              roles:
-                description: List of roles
-                example:
-                - tds_monitor
-                - mgmt
-                items:
-                  type: string
-                required: true
-                type: array
-              serial_number:
-                description: Serial number
-                example: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b b2
-                required: true
-                type: string
-              ssd_count:
-                description: Number of SSDs
-                example: 3
-                required: true
-                type: integer
-              total_capacity:
-                description: Total capacity
-                example: 100 GiB
-                required: true
-                type: string
-              total_memory_capacity:
-                description: Total memory
-                example: 15 GiB
-                required: true
-                type: string
-            type: object
-          type: array
-      type: object
-    NetworkConfiguration:
-      properties:
-        dns:
-          properties:
-            external_dns_servers:
-              properties:
-                primary:
-                  description: Primary external DNS server IP
-                  type: string
-                secondary:
-                  description: Secondary external DNS server IPs
-                  items:
-                    type: string
-                  type: array
-              required:
-              - primary
-              type: object
-            internal_dns_server:
-              description: Internal DNS server IP and subnet mask
-              type: string
-          required:
-          - internal_dns_server
-          - external_dns_servers
-          type: object
-        network_plane:
-          properties:
-            backend:
-              properties:
-                subnets:
-                  items:
-                    $ref: '#/components/schemas/Subnet'
-                  type: array
-              required:
-              - subnets
-              type: object
-            frontend:
-              properties:
-                subnets:
-                  items:
-                    $ref: '#/components/schemas/Subnet'
-                  type: array
-              required:
-              - subnets
-              type: object
-            mgmt:
-              properties:
-                subnets:
-                  items:
-                    $ref: '#/components/schemas/Subnet'
-                  type: array
-              required:
-              - subnets
-              type: object
-          required:
-          - mgmt
-          - backend
-          - frontend
-          type: object
-      required:
-      - dns
-      - network_plane
-      type: object
-    Subnet:
-      properties:
-        ipv4_gateway:
-          description: IPv4 gateway address
-          type: string
-        ipv4_network:
-          description: IPv4 network address and subnet mask
-          type: string
-        ipv6_gateway:
-          description: IPv6 gateway address
-          nullable: true
-          type: string
-        ipv6_network:
-          description: IPv6 network address and subnet mask
-          nullable: true
-          type: string
-        name:
-          description: Name of the subnet
-          type: string
-        zones:
-          items:
-            $ref: '#/components/schemas/Zone'
-          type: array
-      required:
-      - name
-      - ipv4_gateway
-      - ipv4_network
-      - zones
-      type: object
-    Zone:
-      properties:
-        floating_ipv4_pool:
-          description: Floating IPv4 address pool
-          nullable: true
-          type: string
-        floating_ipv6_pool:
-          description: Floating IPv6 address pool
-          nullable: true
-          type: string
-        name:
-          description: Name of the zone
-          type: string
-        nas_domain_name:
-          description: NAS domain name
-          nullable: true
-          type: string
-        nas_floating_ipv4_pool:
-          description: NAS floating IPv4 address pool
-          nullable: true
-          type: string
-        nas_floating_ipv6_pool:
-          description: NAS floating IPv6 address pool
-          nullable: true
-          type: string
-        object_domain_name:
-          description: Object domain name
-          nullable: true
-          type: string
-        object_floating_ipv4_pool:
-          description: Object floating IPv4 address pool
-          nullable: true
-          type: string
-        object_floating_ipv6_pool:
-          description: Object floating IPv6 address pool
-          nullable: true
-          type: string
-        static_ipv4_pool:
-          description: Static IPv4 address pool
-          nullable: true
-          type: string
-        static_ipv6_pool:
-          description: Static IPv6 address pool
-          nullable: true
-          type: string
-      required:
-      - name
+        - error_code
+        - message
       type: object
 info:
   description: powered by Flasgger
   termsOfService: /tos
-  title: Magnascale
+  title: Terra_search
   version: 0.0.1
 openapi: 3.0.2
 paths:
-  /api/deploy/cache-disks/config:
+  /api/terra_search/deploy/cluster/config:
     get:
-      description: 'Query disk information and role configuration
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  cluster:
-                    description: Cluster information
-                    properties:
-                      deploy_mode:
-                        description: Cluster deployment mode
-                        properties:
-                          nas:
-                            description: Network Attached Storage (NAS) deployment
-                              status
-                            example: true
-                            type: boolean
-                          object:
-                            description: Object deployment status
-                            example: true
-                            type: boolean
-                        type: object
-                      nas:
-                        description: Network Attached Storage (NAS) configuration
-                        properties:
-                          is_bcache_enabled:
-                            description: Whether bcache is enabled for NAS
-                            example: true
-                            type: boolean
-                        type: object
-                      object:
-                        description: Object storage configuration
-                        properties:
-                          is_cache_enabled:
-                            description: Whether cache is enabled for object storage
-                            example: false
-                            type: boolean
-                        type: object
-                    type: object
-                  nodes:
-                    description: List of nodes in the cluster
-                    items:
-                      description: Node information
-                      properties:
-                        bcache_partition_capacity:
-                          description: Capacity of bcache partition
-                          example: 50 GiB
-                          required: true
-                          type: string
-                        bmc:
-                          description: Baseboard Management Controller (BMC) IP address
-                          example: 127.0.0.1/24
-                          required: true
-                          type: string
-                        cpu_core:
-                          description: Number of CPU cores
-                          example: 8
-                          required: true
-                          type: integer
-                        hdd_count:
-                          description: Number of HDDs
-                          example: 3
-                          required: true
-                          type: integer
-                        hostname:
-                          description: Hostname of the node
-                          example: node1
-                          required: true
-                          type: string
-                        ip:
-                          description: IP address of the node
-                          example: 10.128.136.221/24
-                          required: true
-                          type: string
-                        nic_count:
-                          description: Number of Network Interface Cards (NICs)
-                          example: 3
-                          required: true
-                          type: integer
-                        product_name:
-                          description: Product name
-                          example: VM
-                          required: true
-                          type: string
-                        rack_name:
-                          description: Rack location of the node
-                          example: rack_0
-                          required: true
-                          type: string
-                        serial_number:
-                          description: Serial number of the node
-                          example: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7
-                            3b b2
-                          required: true
-                          type: string
-                        ssd_count:
-                          description: Number of SSDs
-                          example: 3
-                          required: true
-                          type: integer
-                        ssds:
-                          description: List of SSDs in the node
-                          items:
-                            description: SSD information
-                            properties:
-                              name:
-                                description: Name of the SSD
-                                example: /dev/nvme0n1
-                                required: true
-                                type: string
-                              role:
-                                description: Role of the SSD
-                                example: meta
-                                required: true
-                                type: string
-                              serial_number:
-                                description: Serial number of the SSD
-                                example: VMware NVME_0000
-                                required: true
-                                type: string
-                              size:
-                                description: Size of the SSD in bytes
-                                example: 536870912000
-                                required: true
-                                type: integer
-                              type:
-                                description: Type of the SSD
-                                example: nvme
-                                required: true
-                                type: string
-                            type: object
-                          type: array
-                        total_capacity:
-                          description: Total capacity
-                          example: 100 GiB
-                          required: true
-                          type: string
-                        total_memory_capacity:
-                          description: Total memory capacity
-                          example: 15 GiB
-                          required: true
-                          type: string
-                      type: object
-                    type: array
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Get disk information
-      tags:
-      - Disk
-    post:
-      description: 'Mainly to modify the role of the disk, such as TDS and OSD
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              items:
-                properties:
-                  bcache_partition_capacity:
-                    description: Capacity of bcache partition
-                    example: 50 GiB
-                    required: true
-                    type: string
-                  ip:
-                    description: IP address of the node
-                    example: 10.128.136.221/24
-                    required: true
-                    type: string
-                  serial_number:
-                    description: Serial number of the node
-                    example: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b b2
-                    required: true
-                    type: string
-                  ssds:
-                    description: List of SSDs in the node
-                    items:
-                      properties:
-                        name:
-                          description: Name of the SSD
-                          example: /dev/nvme0n1
-                          required: true
-                          type: string
-                        role:
-                          description: Role of the SSD
-                          example: meta
-                          required: true
-                          type: string
-                        serial_number:
-                          description: Serial number of the SSD
-                          example: VMware NVME_0000
-                          required: true
-                          type: string
-                        type:
-                          description: Type of the SSD
-                          example: nvme
-                          required: true
-                          type: string
-                      type: object
-                    type: array
-                type: object
-              type: array
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify disk information
-      tags:
-      - Disk
-  /api/deploy/cancel:
-    post:
-      description: '- Delete user_template
-
-        '
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Restore configuration to initial state
-      tags:
-      - Deploy
-  /api/deploy/cluster/config:
-    get:
-      description: 'Query the configuration information of the cluster, <br>
-
-        Including cache, NTP, and advanced options content
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClusterConfiguration'
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Query cluster configuration
-      tags:
-      - Cluster
-    post:
-      description: 'Modifying cluster configuration <br>
-
-        Including cache, NTP, and advanced options content
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                cluster:
-                  properties:
-                    nas:
-                      description: NAS configuration
-                      properties:
-                        is_bcache_enabled:
-                          description: Whether BCACHE is enabled
-                          example: true
-                          required: true
-                          type: boolean
-                      type: object
-                    network:
-                      description: Network configuration
-                      properties:
-                        ntp:
-                          description: NTP configuration
-                          properties:
-                            external_servers:
-                              description: List of external NTP server addresses
-                              example: []
-                              items:
-                                type: string
-                              type: array
-                            internal_server:
-                              description: Internal NTP server address
-                              example: ntp.magnascale
-                              required: true
-                              type: string
-                            network_plane:
-                              description: Network plane
-                              example: mgmt
-                              required: true
-                              type: string
-                            synchronized_date_time_offset:
-                              description: Synchronized date time offset (seconds)
-                              example: 120
-                              required: true
-                              type: integer
-                            synchronized_timezone:
-                              description: Synchronized timezone
-                              example: Asia/Shanghai
-                              required: true
-                              type: string
-                          type: object
-                      type: object
-                    object:
-                      description: Object storage configuration
-                      properties:
-                        is_cache_enabled:
-                          description: Whether cache is enabled
-                          example: false
-                          required: true
-                          type: boolean
-                      type: object
-                    vhost_number:
-                      description: Number of virtual hosts
-                      example: 1
-                      required: true
-                      type: integer
-                  type: object
-                nodes:
-                  description: List of node information
-                  items:
-                    properties:
-                      ip:
-                        description: IP address
-                        example: 10.128.136.221/24
-                        required: true
-                        type: string
-                      roles:
-                        description: List of roles
-                        example:
-                        - tds_monitor
-                        - mgmt
-                        items:
-                          type: string
-                        required: true
-                        type: array
-                    type: object
-                  type: array
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify cluster configuration
-      tags:
-      - Cluster
-  /api/deploy/cluster/health-check:
-    post:
-      description: 'Query the health status of various components in the cluster
+      description: 'Get deployment config of the cluster, used to get cluster nodes
+        and deploy mode
 
         '
       responses:
@@ -679,795 +30,58 @@ paths:
           content:
             application/json:
               example:
-              - name: health
-                status: 0
-              - name: etcd
-                status: 0
-              - name: tfs
-                status: 0
-              - name: '...'
-                status: 0
-              schema:
-                description: List of details of each component
-                items:
-                  properties:
-                    name:
-                      required: true
-                      type: string
-                    status:
-                      required: true
-                      type: integer
-                  type: object
-                type: array
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Cluster health check
-      tags:
-      - Cluster
-  /api/deploy/cluster/recommend-config:
-    get:
-      description: 'Generate recommended configurations based on existing cluster
-        information
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClusterConfiguration'
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Automatically generate recommended configurations
-      tags:
-      - Cluster
-  /api/deploy/cluster/status:
-    post:
-      description: 'Query the deployment status of the cluster, used to check if the
-        cluster has been deployed completely
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
+                ip_segments: 10.128.137.188/24,10.128.137.189/24
+                password: password
+                type: standard
+                username: username
+                vip: 10.128.137.186/24
               schema:
                 properties:
-                  message:
-                    example: The current node has been deployed in storage cluster
-                      xxx. Please destroy the cluster before executing the deployment
+                  deploy_mode:
+                    enum:
+                      - standard
+                      - fast
                     type: string
-                  status:
-                    example: 1
-                    type: integer
-                required:
-                - status
-                - message
+                  ip_segments:
+                    type: string
+                  password:
+                    type: string
+                  username:
+                    type: string
+                  vip:
+                    type: string
                 type: object
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Query the deployment status of the cluster
+      summary: Get deployment config of the cluster
       tags:
-      - Cluster
-  /api/deploy/disks/health-check:
+        - Cluster
     post:
-      description: 'Check the health status of the disk
+      description: 'Set deployment config of the cluster, used to set cluster nodes
+        and deploy mode
 
         '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  error:
-                    description: List of errors (if any)
-                    items:
-                      example: []
-                      type: string
-                    type: array
-                  success:
-                    description: List of successful responses
-                    items:
-                      properties:
-                        disk:
-                          description: List of disks in the node
-                          items:
-                            properties:
-                              capacity:
-                                description: Capacity of the disk
-                                example: 100 GiB
-                                required: true
-                                type: string
-                              serial_number:
-                                description: Serial number of the disk
-                                example: 3861d4b20db6fad89193aff3c1b9ac73
-                                required: true
-                                type: string
-                              slot:
-                                description: Slot number of the disk
-                                example: 1
-                                required: true
-                                type: integer
-                              status:
-                                description: Status of the disk
-                                example: 1
-                                required: true
-                                type: integer
-                              type:
-                                description: Type of the disk
-                                example: SSD
-                                required: true
-                                type: string
-                            type: object
-                          type: array
-                        hostname:
-                          description: Hostname of the node
-                          example: node1
-                          required: true
-                          type: string
-                      type: object
-                    type: array
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Check disk status
-      tags:
-      - Disk
-  /api/deploy/network/config:
-    get:
-      description: 'Query network planning information for management network, business
-        network, and cluster network
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                dns:
-                  external_dns_servers:
-                    primary: 10.128.106.123/24
-                    secondary: []
-                  internal_dns_server: 2.2.2.100/24
-                network_plane:
-                  backend:
-                    subnets:
-                    - ipv4_gateway: 1.1.1.1
-                      ipv4_network: 1.1.1.0/24
-                      name: 1.1.1.0/24
-                      zones:
-                      - name: backend_default
-                        static_ipv4_pool: 1.1.1.10/24-1.1.1.20/24
-                  frontend:
-                    subnets:
-                    - ipv4_gateway: 2.2.2.1
-                      ipv4_network: 2.2.2.0/24
-                      ipv6_gateway: 2000::1
-                      ipv6_network: 2000::/64
-                      name: 2.2.2.0/24
-                      zones:
-                      - name: frontend_default
-                        nas_domain_name: magnascale.nas.com
-                        nas_floating_ipv4_pool: 2.2.2.30/24-2.2.2.40/24
-                        nas_floating_ipv6_pool: 2001::30/64-2001::40/64
-                        static_ipv4_pool: 2.2.2.10/24-2.2.2.20/24
-                        static_ipv6_pool: 2001::10/64-2001::20/64
-                  mgmt:
-                    subnets:
-                    - ipv4_gateway: 10.128.19.1
-                      ipv4_network: 10.128.19.0/24
-                      name: 10.128.19.0/24
-                      zones:
-                      - floating_ipv4_pool: 10.128.19.174/24
-                        name: management_default
-              schema:
-                $ref: '#/components/schemas/NetworkConfiguration'
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Query network settings
-      tags:
-      - Network
-    post:
       requestBody:
         content:
           application/json:
             example:
-              dns:
-                external_dns_servers:
-                  primary: 10.128.106.123/24
-                  secondary: []
-                internal_dns_server: 2.2.2.100/24
-              network_plane:
-                backend:
-                  subnets:
-                  - ipv4_gateway: 1.1.1.1
-                    ipv4_network: 1.1.1.0/24
-                    name: 1.1.1.0/24
-                    zones:
-                    - name: backend_default
-                      static_ipv4_pool: 1.1.1.10/24-1.1.1.20/24
-                frontend:
-                  subnets:
-                  - ipv4_gateway: 2.2.2.1
-                    ipv4_network: 2.2.2.0/24
-                    ipv6_gateway: 2000::1
-                    ipv6_network: 2000::/64
-                    name: 2.2.2.0/24
-                    zones:
-                    - name: frontend_default
-                      nas_domain_name: magnascale.nas.com
-                      nas_floating_ipv4_pool: 2.2.2.30/24-2.2.2.40/24
-                      nas_floating_ipv6_pool: 2001::30/64-2001::40/64
-                      static_ipv4_pool: 2.2.2.10/24-2.2.2.20/24
-                      static_ipv6_pool: 2001::10/64-2001::20/64
-                mgmt:
-                  subnets:
-                  - ipv4_gateway: 10.128.19.1
-                    ipv4_network: 10.128.19.0/24
-                    name: 10.128.19.0/24
-                    zones:
-                    - floating_ipv4_pool: 10.128.19.174/24
-                      name: management_default
-            schema:
-              $ref: '#/components/schemas/NetworkConfiguration'
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify network settings
-      tags:
-      - Network
-  /api/deploy/network/health-check:
-    post:
-      description: 'Used to check if each network is unobstructed
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  network_status:
-                    description: "\u7F51\u7EDC\u72B6\u6001"
-                    example: -1
-                    type: integer
-                  nodes:
-                    description: "\u8282\u70B9\u4FE1\u606F"
-                    items:
-                      properties:
-                        backend:
-                          properties:
-                            ip:
-                              description: "\u540E\u7AEF\u63A5\u53E3IP"
-                              example: 33.33.33.3
-                              required: true
-                              type: string
-                            network_status:
-                              description: "\u540E\u7AEF\u63A5\u53E3\u7F51\u7EDC\u72B6\
-                                \u6001"
-                              example: 0
-                              required: true
-                              type: integer
-                          type: object
-                        frontend:
-                          properties:
-                            ip:
-                              description: "\u524D\u7AEF\u63A5\u53E3IP"
-                              example: 33.34.33.3
-                              required: true
-                              type: string
-                            network_status:
-                              description: "\u524D\u7AEF\u63A5\u53E3\u7F51\u7EDC\u72B6\
-                                \u6001"
-                              example: 0
-                              required: true
-                              type: integer
-                          type: object
-                        hostname:
-                          description: "\u4E3B\u673A\u540D"
-                          example: node1
-                          required: true
-                          type: string
-                        mgmt:
-                          properties:
-                            ip:
-                              description: "\u7BA1\u7406\u63A5\u53E3IP"
-                              example: 10.128.129.211
-                              required: true
-                              type: string
-                            network_status:
-                              description: "\u7BA1\u7406\u63A5\u53E3\u7F51\u7EDC\u72B6\
-                                \u6001"
-                              example: 0
-                              required: true
-                              type: integer
-                          type: object
-                      type: object
-                    type: array
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Used to check if each network is unobstructed
-      tags:
-      - Network
-  /api/deploy/network/nic/config:
-    get:
-      description: 'Query the configuration of the network card, <br>
-
-        including the bond and VLAN status of the network cards in the management
-        network,<br>
-
-        business network, and cluster network
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-              - bmc: 127.0.0.1/24
-                cpu_core: 8
-                hdd_count: 3
-                hostname: node1
-                ip: 10.128.136.221/24
-                network:
-                  devices:
-                  - mac_address: 00:0C:29:1E:24:4A
-                    name: ens224
-                    pci_address: '0000:13:00.0'
-                    rdma_enabled: false
-                    speed: 10000Mb/s
-                    state: up
-                    type: ethernet
-                  interfaces:
-                  - device_name: ens224
-                    ipv4_address: 10.128.19.127/24
-                    name: ens224
-                    network_plane: mgmt
-                    subnet_name: 10.128.19.0/24
-                    type: ethernet
-                    zone_name: management_default
-                  - device_name: ens256
-                    name: ens256
-                    network_plane: backend
-                    subnet_name: 1.1.1.0/24
-                    type: ethernet
-                    zone_name: backend_default
-                  - device_name: ens192
-                    name: ens192
-                    network_plane: frontend
-                    subnet_name: 2.2.2.0/24
-                    type: ethernet
-                    zone_name: frontend_default
-                nic_count: 3
-                product_name: VM
-                rack_name: rack_0
-                serial_number: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b
-                  b2
-                ssd_count: 3
-                total_capacity: 100 GiB
-                total_memory_capacity: 15 GiB
-              schema:
-                items:
-                  properties:
-                    bmc:
-                      type: string
-                    cpu_core:
-                      type: integer
-                    hdd_count:
-                      type: integer
-                    hostname:
-                      type: string
-                    ip:
-                      type: string
-                    network:
-                      properties:
-                        devices:
-                          items:
-                            properties:
-                              mac_address:
-                                type: string
-                              name:
-                                type: string
-                              pci_address:
-                                type: string
-                              rdma_enabled:
-                                type: boolean
-                              speed:
-                                type: string
-                              state:
-                                type: string
-                              type:
-                                type: string
-                            type: object
-                          type: array
-                        interfaces:
-                          items:
-                            properties:
-                              device_name:
-                                type: string
-                              ipv4_address:
-                                type: string
-                              name:
-                                type: string
-                              network_plane:
-                                type: string
-                              subnet_name:
-                                type: string
-                              type:
-                                type: string
-                              zone_name:
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    nic_count:
-                      type: integer
-                    product_name:
-                      type: string
-                    rack_name:
-                      type: string
-                    serial_number:
-                      type: string
-                    ssd_count:
-                      type: integer
-                    total_capacity:
-                      type: string
-                    total_memory_capacity:
-                      type: string
-                  type: object
-                type: array
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Query network card configuration
-      tags:
-      - Network
-    post:
-      description: 'Modify the configuration of the network card, <br>
-
-        including the binding and VLAN status of the network card in the management
-        network,<br>
-
-        business network, and cluster network
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              items:
-                properties:
-                  ip:
-                    example: 10.128.136.221/24
-                    type: string
-                  network:
-                    properties:
-                      interfaces:
-                        items:
-                          properties:
-                            device_name:
-                              example: ens224
-                              type: string
-                            ipv4_address:
-                              example: 10.128.19.127/24
-                              type: string
-                            name:
-                              example: ens224
-                              type: string
-                            network_plane:
-                              example: mgmt
-                              type: string
-                            subnet_name:
-                              example: 10.128.19.0/24
-                              type: string
-                            type:
-                              example: ethernet
-                              type: string
-                            vlan:
-                              properties:
-                                id:
-                                  example: 101
-                                  type: integer
-                                master:
-                                  properties:
-                                    bond:
-                                      properties:
-                                        mode:
-                                          example: 1
-                                          type: integer
-                                        slaves:
-                                          items:
-                                            example:
-                                            - ens161
-                                            - ens256
-                                            type: string
-                                          type: array
-                                      type: object
-                                    name:
-                                      example: bond0
-                                      type: string
-                                    type:
-                                      example: bond
-                                      type: string
-                                  type: object
-                              type: object
-                            zone_name:
-                              example: management_default
-                              type: string
-                          type: object
-                        type: array
-                    type: object
-                  serial_number:
-                    example: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b b2
-                    type: string
-                type: object
-              type: array
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify network card configuration
-      tags:
-      - Network
-  /api/deploy/network/stress-test:
-    post:
-      description: 'Conduct stress testing on the network and return test results
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  network_status:
-                    description: Network status
-                    example: -1
-                    type: integer
-                  nodes:
-                    description: Node information
-                    items:
-                      properties:
-                        backend:
-                          properties:
-                            ip:
-                              description: Backend interface IP
-                              example: 10.30.1.5
-                              required: true
-                              type: string
-                            network_status:
-                              description: Backend interface network status
-                              example: 0
-                              required: true
-                              type: integer
-                            nic:
-                              description: Network Interface Card
-                              example: ens256
-                              required: true
-                              type: string
-                            speed:
-                              description: Network speed
-                              example: 282.3 MB/s
-                              required: true
-                              type: string
-                          type: object
-                        frontend:
-                          properties:
-                            ip:
-                              description: Frontend interface IP
-                              example: 10.30.15.5
-                              required: true
-                              type: string
-                            network_status:
-                              description: Frontend interface network status
-                              example: 0
-                              required: true
-                              type: integer
-                            nic:
-                              description: Network Interface Card
-                              example: ens224
-                              required: true
-                              type: string
-                            speed:
-                              description: Network speed
-                              example: 282.3 MB/s
-                              required: true
-                              type: string
-                          type: object
-                        hostname:
-                          description: Hostname
-                          example: node1
-                          required: true
-                          type: string
-                        mgmt:
-                          properties:
-                            ip:
-                              description: Management interface IP
-                              example: 10.128.136.221
-                              required: true
-                              type: string
-                            network_status:
-                              description: Management interface network status
-                              example: 0
-                              required: true
-                              type: integer
-                            nic:
-                              description: Network Interface Card
-                              example: ens192
-                              required: true
-                              type: string
-                            speed:
-                              description: Network speed
-                              example: 282.3 MB/s
-                              required: true
-                              type: string
-                          type: object
-                      type: object
-                    type: array
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Network stress testing
-      tags:
-      - Network
-  /api/deploy/nodes:
-    get:
-      description: 'After the user enters the page, they automatically discover node
-        information and update it to the page
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-              - bmc: 127.0.0.1/24
-                cpu_core: 8
-                hdd_count: 3
-                hostname: node1
-                ip: 10.128.136.221/24
-                nic_count: 3
-                product_name: VM
-                rack_name: rack_0
-                serial_number: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b
-                  b2
-                ssd_count: 3
-                total_capacity: 100 GiB
-                total_memory_capacity: 15 GiB
-              schema:
-                items: null
-                properties:
-                  bmc:
-                    description: BMC IP address of the server
-                    type: string
-                  cpu_core:
-                    description: Number of CPU cores
-                    type: integer
-                  hdd_count:
-                    description: Number of HDDs
-                    type: integer
-                  hostname:
-                    description: Hostname of the server
-                    type: string
-                  ip:
-                    description: IP address of the server
-                    type: string
-                  nic_count:
-                    description: Number of network interfaces
-                    type: integer
-                  product_name:
-                    description: Product name of the server
-                    type: string
-                  rack_name:
-                    description: Rack location of the server
-                    type: string
-                  serial_number:
-                    description: Serial number of the server
-                    type: string
-                  ssd_count:
-                    description: Number of SSDs
-                    type: integer
-                  total_capacity:
-                    description: Total capacity of the server
-                    type: string
-                  total_memory_capacity:
-                    description: Total memory of the server
-                    type: string
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Automatically discover nodes
-      tags:
-      - Node
-    post:
-      description: 'Node information can be modified, but only node name, rack, and
-        model can be modified
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              items:
-                example:
-                  hostname: node1
-                  ip: 192.168.1.100/24
-                  product_name: ServerX
-                  rack_name: rack1
-                  serial_number: ABC123
-                properties:
-                  hostname:
-                    type: string
-                  ip:
-                    type: string
-                  product_name:
-                    type: string
-                  rack_name:
-                    type: string
-                  serial_number:
-                    type: string
-                required:
-                - ip
-                - hostname
-                - serial_number
-                - rack_name
-                - product_name
-                type: object
-              type: array
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify Node information
-      tags:
-      - Node
-  /api/deploy/nodes/discover:
-    post:
-      description: 'Users manually input node information on the page, <br>
-
-        The backend receives node information and updates it to the page upon discovering
-        it
-
-        '
-      requestBody:
-        content:
-          application/json:
+              ip_segments: 10.128.137.188,10.128.137.189
+              password: password
+              type: standard
+              username: username
+              vip: 10.128.137.186
             schema:
               properties:
+                deploy_mode:
+                  enum:
+                    - standard
+                    - fast
+                  example: standard
+                  type: string
                 ip_segments:
-                  example: 192.168.1.10/24-192.168.1.13/24
+                  example: 10.128.137.188,10.128.137.189
                   type: string
                 password:
                   example: password
@@ -1475,92 +89,132 @@ paths:
                 username:
                   example: root
                   type: string
-              required:
-              - username
-              - password
-              - ip_segments
+                vip:
+                  example: 10.128.137.186
+                  type: string
               type: object
         required: true
+      responses:
+        '200':
+          content:
+            application/json; error:
+              schema:
+                $ref: '#/components/schemas/APIParameterError'
+          description: Successful operation
+      summary: Set deployment config of the cluster
+      tags:
+        - Cluster
+  /api/terra_search/deploy/node:
+    get:
+      description: 'Get disks on cluster nodes excluding the system disk
+
+        '
       responses:
         '200':
           content:
             application/json:
               example:
-              - bmc: 127.0.0.1/24
-                cpu_core: 8
-                hdd_count: 3
-                hostname: node1
-                ip: 10.128.136.221/24
-                nic_count: 3
-                product_name: VM
-                rack_name: rack_0
-                serial_number: VMware-42 05 25 d0 a9 17 ec 88-3c ea e6 0f d6 f7 3b
-                  b2
-                ssd_count: 3
-                total_capacity: 100 GiB
-                total_memory_capacity: 15 GiB
+                - disks:
+                    - disk_type: NVME
+                      is_selected: true
+                      name: /dev/sdb
+                      serial_number: serial-number
+                      size: 102400
+                  ip_address: 192.168.137.188
               schema:
-                items: null
-                properties:
-                  bmc:
-                    description: BMC IP address of the server
-                    type: string
-                  cpu_core:
-                    description: Number of CPU cores
-                    type: integer
-                  hdd_count:
-                    description: Number of HDDs
-                    type: integer
-                  hostname:
-                    description: Hostname of the server
-                    type: string
-                  ip:
-                    description: IP address of the server
-                    type: string
-                  nic_count:
-                    description: Number of network interfaces
-                    type: integer
-                  product_name:
-                    description: Product name of the server
-                    type: string
-                  rack_name:
-                    description: Rack location of the server
-                    type: string
-                  serial_number:
-                    description: Serial number of the server
-                    type: string
-                  ssd_count:
-                    description: Number of SSDs
-                    type: integer
-                  total_capacity:
-                    description: Total capacity of the server
-                    type: string
-                  total_memory_capacity:
-                    description: Total memory of the server
-                    type: string
-                type: object
+                items:
+                  properties:
+                    disks:
+                      items:
+                        properties:
+                          disk_type:
+                            enum:
+                              - NVME
+                              - SAS
+                              - SATA
+                              - HDD
+                            type: string
+                          is_selected:
+                            type: boolean
+                          name:
+                            type: string
+                          serial_number:
+                            type: string
+                          size:
+                            type: integer
+                        type: object
+                      type: array
+                    ip_address:
+                      type: string
+                  type: object
+                type: array
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Manually discover nodes
+      summary: Get disks on cluster nodes
       tags:
-      - Node
-  /api/deploy/progress:
-    get:
+        - Node
+    post:
+      description: 'User manually selects elasticsearch data disk for nodes
+
+        '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                properties:
+                  disks:
+                    items:
+                      properties:
+                        disk_type:
+                          enum:
+                            - NVME
+                            - SAS
+                            - SATA
+                            - HDD
+                          example: NVME
+                          type: string
+                        is_selected:
+                          example: true
+                          type: boolean
+                        name:
+                          example: /dev/sda
+                          type: string
+                        serial_number:
+                          example: serial-number
+                          type: string
+                        size:
+                          example: 1024000
+                          type: integer
+                      required:
+                        - name
+                        - serial_number
+                        - size
+                        - disk_type
+                        - is_selected
+                      type: object
+                    type: array
+                  ip_address:
+                    example: 192.168.137.188
+                    type: string
+                type: object
+              type: array
+        required: true
       responses:
         '200':
           content:
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Query deployment steps
+      summary: Set data disk for cluster nodes
       tags:
-      - Deploy
-  /api/deploy/scenario:
+        - Node
+  /api/terra_search/deploy/progress:
     get:
-      description: 'Obtain the deployment mode of the current cluster
+      description: 'Get progress of the deployment.
 
         '
       responses:
@@ -1569,85 +223,63 @@ paths:
             application/json:
               schema:
                 properties:
-                  current:
-                    example:
-                      nas: true
-                      object: true
-                    properties:
-                      nas:
-                        type: boolean
-                      object:
-                        type: boolean
-                    type: object
-                  options:
-                    example:
-                    - nas: true
-                      object: false
-                    - nas: true
-                      object: true
-                    - nas: false
-                      object: true
+                  app_uri:
+                    example: https://10.128.137.188:443
+                    type: string
+                  certificate_file:
+                    example: ce.crt
+                    type: string
+                  mgmt_uri:
+                    example: https://10.128.137.188:9200
+                    type: string
+                  status:
+                    enum:
+                      - initial
+                      - deploying
+                      - success
+                      - failed
+                    example: success
+                    type: string
+                type: object
+          description: Successful operation
+      summary: Get progress of the deployment
+      tags:
+        - Deploy
+  /api/terra_search/deploy/step:
+    get:
+      description: 'Get current step and all step
+
+        '
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                current_step: 1
+                steps:
+                  - cluster_config
+                  - select_disk
+                  - storage_config
+                  - deployment_terra_search
+              schema:
+                properties:
+                  current_step:
+                    type: integer
+                  steps:
                     items:
-                      properties:
-                        nas:
-                          type: boolean
-                        object:
-                          type: boolean
-                      type: object
+                      type: string
                     type: array
                 type: object
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Get deployment scenario
+      summary: Get the current step
       tags:
-      - Deploy Scenario
-    post:
-      description: 'Update deployment Scenario
-
-        '
-      requestBody:
-        content:
-          application/json:
-            example:
-              nas: true
-              object: false
-            schema:
-              properties:
-                nas:
-                  type: boolean
-                object:
-                  type: boolean
-              type: object
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Modify deployment scenario
-      tags:
-      - Deploy Scenario
-  /api/deploy/start:
-    post:
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIError'
-          description: Successful operation
-      summary: Start deployment
-      tags:
-      - Deploy
-  /api/deploy/step:
+        - Deploy
+  /api/terra_search/deploy/storage/config:
     get:
-      description: 'Get the current step being executed on the page <br>
-
-        When closing the page and entering again, deployment can continue from the
-        previous steps
+      description: 'Get storage cluster domain and https port
 
         '
       responses:
@@ -1656,41 +288,29 @@ paths:
             application/json:
               schema:
                 properties:
-                  status:
-                    enum:
-                    - initial
-                    - deploying
-                    - success
-                    - failed
-                    example: initial
+                  certificate_content:
+                    example: ca-certificate-content
                     type: string
-                  step:
-                    enum:
-                    - deploy_mode
-                    - discover_node
-                    - configure_network
-                    - configure_cluster
-                    - configure_node_disk
-                    - configure_node_nic
-                    - preview
-                    - deploy
-                    example: deploy_mode
+                  certificate_filename:
+                    example: ca.crt
                     type: string
-                required:
-                - status
-                - step
+                  domain:
+                    example: magnascale.cn
+                    type: string
+                  https_port:
+                    example: 8184
+                    type: integer
                 type: object
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Get the current step being executed on the page
+      summary: Get storage cluster configuration
       tags:
-      - Deploy
+        - Storage
     post:
-      description: 'Update operation steps <br>
-
-        Supports the previous and next steps
+      description: 'User manually set storage cluster address, upload storage cluster
+        certificate and start deployment
 
         '
       requestBody:
@@ -1698,47 +318,27 @@ paths:
           application/json:
             schema:
               properties:
-                operation:
-                  example: previous_step
+                certificate_content:
+                  example: ca-certificate-content
                   type: string
-              required:
-              - operation
+                certificate_filename:
+                  example: ca.crt
+                  type: string
+                domain:
+                  example: magnascale.cn
+                  type: string
+                https_port:
+                  example: 8184
+                  type: integer
               type: object
         required: true
       responses:
         '200':
           content:
-            application/json:
-              schema:
-                properties:
-                  status:
-                    enum:
-                    - initial
-                    - deploying
-                    - success
-                    - failed
-                    example: initial
-                    type: string
-                  step:
-                    enum:
-                    - deploy_mode
-                    - discover_node
-                    - configure_network
-                    - configure_cluster
-                    - configure_node_disk
-                    - configure_node_nic
-                    - preview
-                    - deploy
-                    example: deploy_mode
-                    type: string
-                required:
-                - status
-                - step
-                type: object
             application/json; error:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: '#/components/schemas/APIParameterError'
           description: Successful operation
-      summary: Update operation steps
+      summary: Set storage cluster configuration and start deployment
       tags:
-      - Deploy
+        - Storage
