@@ -25,7 +25,7 @@ const Deploy = (props) => {
   }, [])
 
   useEffect(()=>{
-    if(result.status === `doing`){
+    if(result.status === `deploying`){
       timeId = setInterval(()=>getInitData(), 3000)
     }else{
       clearInterval(timeId)
@@ -42,8 +42,8 @@ const Deploy = (props) => {
         className={styles.deploy}
       >
         {(result.status&&statusMap.includes(result.status)) && <img src={require(`@/assets/${result.status}.svg`)}/>}
-        {result.status === `doing` && <>
-          <div className={styles.doing}>正在部署检索服务...</div>
+        {result.status === `deploying` && <>
+          <div className={styles.deploying}>正在部署检索服务...</div>
         </>}
         {result.status === `failed` && <>
           <div className={styles.doing}>检索服务部署失败</div>
