@@ -9,6 +9,8 @@ export async function apiTerraSearchDeployProgressGet(options?: { [key: string]:
     {
       app_uri?: string;
       certificate_file?: string;
+      certificate_filename?: string;
+      failed_reason?: string;
       mgmt_uri?: string;
       status?: 'initial' | 'deploying' | 'success' | 'failed';
     } & API.RequestExtend

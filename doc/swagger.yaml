@@ -1,344 +1,494 @@
-components:
-  schemas:
-    APIParameterError:
-      properties:
-        error_code:
-          example: 500
-          type: integer
-        message:
-          example: Parameter error!
-          type: string
-      required:
-        - error_code
-        - message
-      type: object
-info:
-  description: powered by Flasgger
-  termsOfService: /tos
-  title: Terra_search
-  version: 0.0.1
-openapi: 3.0.2
-paths:
-  /api/terra_search/deploy/cluster/config:
-    get:
-      description: 'Get deployment config of the cluster, used to get cluster nodes
-        and deploy mode
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                ip_segments: 10.128.137.188/24,10.128.137.189/24
-                password: password
-                type: standard
-                username: username
-                vip: 10.128.137.186/24
-              schema:
-                properties:
-                  deploy_mode:
-                    enum:
-                      - standard
-                      - fast
-                    type: string
-                  ip_segments:
-                    type: string
-                  password:
-                    type: string
-                  username:
-                    type: string
-                  vip:
-                    type: string
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Get deployment config of the cluster
-      tags:
-        - Cluster
-    post:
-      description: 'Set deployment config of the cluster, used to set cluster nodes
-        and deploy mode
-
-        '
-      requestBody:
-        content:
-          application/json:
-            example:
-              ip_segments: 10.128.137.188,10.128.137.189
-              password: password
-              type: standard
-              username: username
-              vip: 10.128.137.186
-            schema:
-              properties:
-                deploy_mode:
-                  enum:
-                    - standard
-                    - fast
-                  example: standard
-                  type: string
-                ip_segments:
-                  example: 10.128.137.188,10.128.137.189
-                  type: string
-                password:
-                  example: password
-                  type: string
-                username:
-                  example: root
-                  type: string
-                vip:
-                  example: 10.128.137.186
-                  type: string
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Set deployment config of the cluster
-      tags:
-        - Cluster
-  /api/terra_search/deploy/node:
-    get:
-      description: 'Get disks on cluster nodes excluding the system disk
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                - disks:
-                    - disk_type: NVME
-                      is_selected: true
-                      name: /dev/sdb
-                      serial_number: serial-number
-                      size: 102400
-                  ip_address: 192.168.137.188
-              schema:
-                items:
-                  properties:
-                    disks:
-                      items:
-                        properties:
-                          disk_type:
-                            enum:
-                              - NVME
-                              - SAS
-                              - SATA
-                              - HDD
-                            type: string
-                          is_selected:
-                            type: boolean
-                          name:
-                            type: string
-                          serial_number:
-                            type: string
-                          size:
-                            type: integer
-                        type: object
-                      type: array
-                    ip_address:
-                      type: string
-                  type: object
-                type: array
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Get disks on cluster nodes
-      tags:
-        - Node
-    post:
-      description: 'User manually selects elasticsearch data disk for nodes
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              items:
-                properties:
-                  disks:
-                    items:
-                      properties:
-                        disk_type:
-                          enum:
-                            - NVME
-                            - SAS
-                            - SATA
-                            - HDD
-                          example: NVME
-                          type: string
-                        is_selected:
-                          example: true
-                          type: boolean
-                        name:
-                          example: /dev/sda
-                          type: string
-                        serial_number:
-                          example: serial-number
-                          type: string
-                        size:
-                          example: 1024000
-                          type: integer
-                      required:
-                        - name
-                        - serial_number
-                        - size
-                        - disk_type
-                        - is_selected
-                      type: object
-                    type: array
-                  ip_address:
-                    example: 192.168.137.188
-                    type: string
-                type: object
-              type: array
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Set data disk for cluster nodes
-      tags:
-        - Node
-  /api/terra_search/deploy/progress:
-    get:
-      description: 'Get progress of the deployment.
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  app_uri:
-                    example: https://10.128.137.188:443
-                    type: string
-                  certificate_file:
-                    example: ce.crt
-                    type: string
-                  mgmt_uri:
-                    example: https://10.128.137.188:9200
-                    type: string
-                  status:
-                    enum:
-                      - initial
-                      - deploying
-                      - success
-                      - failed
-                    example: success
-                    type: string
-                type: object
-          description: Successful operation
-      summary: Get progress of the deployment
-      tags:
-        - Deploy
-  /api/terra_search/deploy/step:
-    get:
-      description: 'Get current step and all step
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              example:
-                current_step: 1
-                steps:
-                  - cluster_config
-                  - select_disk
-                  - storage_config
-                  - deployment_terra_search
-              schema:
-                properties:
-                  current_step:
-                    type: integer
-                  steps:
-                    items:
-                      type: string
-                    type: array
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Get the current step
-      tags:
-        - Deploy
-  /api/terra_search/deploy/storage/config:
-    get:
-      description: 'Get storage cluster domain and https port
-
-        '
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  certificate_content:
-                    example: ca-certificate-content
-                    type: string
-                  certificate_filename:
-                    example: ca.crt
-                    type: string
-                  domain:
-                    example: magnascale.cn
-                    type: string
-                  https_port:
-                    example: 8184
-                    type: integer
-                type: object
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Get storage cluster configuration
-      tags:
-        - Storage
-    post:
-      description: 'User manually set storage cluster address, upload storage cluster
-        certificate and start deployment
-
-        '
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                certificate_content:
-                  example: ca-certificate-content
-                  type: string
-                certificate_filename:
-                  example: ca.crt
-                  type: string
-                domain:
-                  example: magnascale.cn
-                  type: string
-                https_port:
-                  example: 8184
-                  type: integer
-              type: object
-        required: true
-      responses:
-        '200':
-          content:
-            application/json; error:
-              schema:
-                $ref: '#/components/schemas/APIParameterError'
-          description: Successful operation
-      summary: Set storage cluster configuration and start deployment
-      tags:
-        - Storage
+{
+  "components": {
+    "schemas": {
+      "APIParameterError": {
+        "properties": {
+          "error_code": {
+            "example": 500,
+            "type": "integer"
+          },
+          "message": {
+            "example": "Parameter error!",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error_code",
+          "message"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "powered by Flasgger",
+    "termsOfService": "/tos",
+    "title": "Terra_search",
+    "version": "0.0.1"
+  },
+  "openapi": "3.0.2",
+  "paths": {
+    "/api/terra_search/deploy/cluster/config": {
+      "get": {
+        "description": "Get deployment config of the cluster, used to get cluster nodes and deploy mode\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "ip_segments": "10.128.137.188/24,10.128.137.189/24",
+                  "password": "password",
+                  "type": "standard",
+                  "username": "username",
+                  "vip": "10.128.137.186/24"
+                },
+                "schema": {
+                  "properties": {
+                    "deploy_mode": {
+                      "enum": [
+                        "standard",
+                        "fast"
+                      ],
+                      "type": "string"
+                    },
+                    "ip_segments": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "vip": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Get deployment config of the cluster",
+        "tags": [
+          "Cluster"
+        ]
+      },
+      "post": {
+        "description": "Set deployment config of the cluster, used to set cluster nodes and deploy mode\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "ip_segments": "10.128.137.188,10.128.137.189",
+                "password": "password",
+                "type": "standard",
+                "username": "username",
+                "vip": "10.128.137.186"
+              },
+              "schema": {
+                "properties": {
+                  "deploy_mode": {
+                    "enum": [
+                      "standard",
+                      "fast"
+                    ],
+                    "example": "standard",
+                    "type": "string"
+                  },
+                  "ip_segments": {
+                    "example": "10.128.137.188,10.128.137.189",
+                    "type": "string"
+                  },
+                  "password": {
+                    "example": "password",
+                    "type": "string"
+                  },
+                  "username": {
+                    "example": "root",
+                    "type": "string"
+                  },
+                  "vip": {
+                    "example": "10.128.137.186",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Set deployment config of the cluster",
+        "tags": [
+          "Cluster"
+        ]
+      }
+    },
+    "/api/terra_search/deploy/node": {
+      "get": {
+        "description": "Get disks on cluster nodes excluding the system disk\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": [
+                {
+                  "disks": [
+                  {
+                    "disk_type": "NVME",
+                    "is_selected": true,
+                    "name": "/dev/sdb",
+                    "serial_number": "serial-number",
+                    "size": 102400
+                  }
+                  ],
+                  "ip_address": "192.168.137.188"
+                }
+                ],
+                "schema": {
+                  "items": {
+                    "properties": {
+                      "disks": {
+                        "items": {
+                          "properties": {
+                            "disk_type": {
+                              "enum": [
+                                "NVME",
+                                "SAS",
+                                "SATA",
+                                "HDD"
+                              ],
+                              "type": "string"
+                            },
+                            "is_selected": {
+                              "type": "boolean"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "serial_number": {
+                              "type": "string"
+                            },
+                            "size": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "ip_address": {
+                        "type": "string"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Get disks on cluster nodes",
+        "tags": [
+          "Node"
+        ]
+      },
+      "post": {
+        "description": "User manually selects elasticsearch data disk for nodes\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "properties": {
+                    "disks": {
+                      "items": {
+                        "properties": {
+                          "disk_type": {
+                            "enum": [
+                              "NVME",
+                              "SAS",
+                              "SATA",
+                              "HDD"
+                            ],
+                            "example": "NVME",
+                            "type": "string"
+                          },
+                          "is_selected": {
+                            "example": true,
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "example": "/dev/sda",
+                            "type": "string"
+                          },
+                          "serial_number": {
+                            "example": "serial-number",
+                            "type": "string"
+                          },
+                          "size": {
+                            "example": 1024000,
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "serial_number",
+                          "size",
+                          "disk_type",
+                          "is_selected"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "ip_address": {
+                      "example": "192.168.137.188",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Set data disk for cluster nodes",
+        "tags": [
+          "Node"
+        ]
+      }
+    },
+    "/api/terra_search/deploy/progress": {
+      "get": {
+        "description": "Get progress of the deployment.\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "app_uri": {
+                      "example": "https://10.128.137.188:443",
+                      "type": "string"
+                    },
+                    "certificate_file": {
+                      "example": "http://localhost/ce.crt",
+                      "type": "string"
+                    },
+                    "certificate_filename": {
+                      "example": "ce.crt",
+                      "type": "string"
+                    },
+                    "failed_reason": {
+                      "example": "连接部署节点超时",
+                      "type": "string"
+                    },
+                    "mgmt_uri": {
+                      "example": "https://10.128.137.188:9200",
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "initial",
+                        "deploying",
+                        "success",
+                        "failed"
+                      ],
+                      "example": "success",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Get progress of the deployment",
+        "tags": [
+          "Deploy"
+        ]
+      }
+    },
+    "/api/terra_search/deploy/step": {
+      "get": {
+        "description": "Get current step and all step\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "current_step": 1,
+                  "steps": [
+                    "cluster_config",
+                    "select_disk",
+                    "storage_config",
+                    "deployment_terra_search"
+                  ]
+                },
+                "schema": {
+                  "properties": {
+                    "current_step": {
+                      "type": "integer"
+                    },
+                    "steps": {
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Get the current step",
+        "tags": [
+          "Deploy"
+        ]
+      }
+    },
+    "/api/terra_search/deploy/storage/config": {
+      "get": {
+        "description": "Get storage cluster domain and https port\n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "certificate_content": {
+                      "example": "ca-certificate-content",
+                      "type": "string"
+                    },
+                    "certificate_filename": {
+                      "example": "ca.crt",
+                      "type": "string"
+                    },
+                    "domain": {
+                      "example": "magnascale.cn",
+                      "type": "string"
+                    },
+                    "https_port": {
+                      "example": 8184,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Get storage cluster configuration",
+        "tags": [
+          "Storage"
+        ]
+      },
+      "post": {
+        "description": "User manually set storage cluster address, upload storage cluster certificate and start deployment\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "certificate_content": {
+                    "example": "ca-certificate-content",
+                    "type": "string"
+                  },
+                  "certificate_filename": {
+                    "example": "ca.crt",
+                    "type": "string"
+                  },
+                  "domain": {
+                    "example": "magnascale.cn",
+                    "type": "string"
+                  },
+                  "https_port": {
+                    "example": 8184,
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; error": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIParameterError"
+                }
+              }
+            },
+            "description": "Successful operation"
+          }
+        },
+        "summary": "Set storage cluster configuration and start deployment",
+        "tags": [
+          "Storage"
+        ]
+      }
+    }
+  }
+}
