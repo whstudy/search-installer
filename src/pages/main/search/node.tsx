@@ -70,17 +70,17 @@ const Node = (props) => {
                 />
               </Form.Item>
               
-              <Form.Item noStyle dependencies={['deploy_mode']}>
+              <Form.Item noStyle dependencies={['type']}>
                 {() => (
                   <>
                       <Form.Item
                         className={styles.deployModeDesc}
                       >
-                        {form.getFieldValue('deploy_mode') === `standard` ? `标准部署的确可以支持部署在3到10个节点上，这种部署方式通常用于较大规模的检索集群，以提供更高的性能和可靠性` : `快速部署支持单节点部署，这种部署方式通常能够帮助客户在资源有限的情况下快速部署检索服务`}
+                        {form.getFieldValue('type') === `standard` ? `标准部署的确可以支持部署在3到10个节点上，这种部署方式通常用于较大规模的检索集群，以提供更高的性能和可靠性` : `快速部署支持单节点部署，这种部署方式通常能够帮助客户在资源有限的情况下快速部署检索服务`}
                       </Form.Item>
                     
                     <Form.Item label={'节点IP'} name={'ip_segments'}>
-                      {form.getFieldValue('deploy_mode') === `standard` ? <Input.TextArea rows={4} placeholder={`节点数量≥3`}/> : <Input placeholder={`请输入一个节点IP`}/>}
+                      {form.getFieldValue('type') === `standard` ? <Input.TextArea rows={4} placeholder={`节点数量≥3`}/> : <Input placeholder={`请输入一个节点IP`}/>}
                     </Form.Item>
                   </>
                 )}
@@ -94,11 +94,11 @@ const Node = (props) => {
                 <Input/>
               </Form.Item>
 
-              <Form.Item noStyle dependencies={['deploy_mode']}>
+              <Form.Item noStyle dependencies={['type']}>
                 {() => (
                   <>
                     {
-                      form.getFieldValue('deploy_mode') === `standard` &&
+                      form.getFieldValue('type') === `standard` &&
                       <Form.Item label={'检索集群VIP'} name={'vip'}>
                         <Input placeholder={`请输入检索集群访问地址`}/>
                       </Form.Item>

@@ -64,7 +64,7 @@ const Disk = (props) => {
     const disksTypeSet =
       new Set(
         disksChecked
-          .map(disk => disk.disk_type)
+          .map(disk => disk.type)
       );
     console.log(disksTypeSet)
     if (hosts.length !== disksChecked.length) {
@@ -128,9 +128,9 @@ const Disk = (props) => {
                 onClick={()=>checkDisk({ip_address: node.ip_address, disk: disk})}>
                 {disk.is_selected && <CheckCircleFilled className={styles.check}/>}
                 <div className={styles.diskIcon}>
-                  <img src={require(`@/assets/${disk.disk_type}.svg`)} />
+                  <img src={require(`@/assets/${disk.type}.svg`)} />
                 </div>
-                <div className={styles.diskName}>{disk.disk_type}-{formatUnit(disk.size)}</div>
+                <div className={styles.diskName}>{disk.type}-{formatUnit(disk.size)}</div>
               </div>)}  
             </div>
           </div>)}

@@ -59,33 +59,6 @@ const Deploy = (props) => {
     XfLY3Ru7HxzFyq1F+qcPWfC+VQHXzPKCRBlBN6t/n1OtOYZsYDuBoW4xAN+uZeV4
     sfdJpyJbIgzyalOvwdrIEd1CAZGqtNRy
     -----END CERTIFICATE-----
-    -----BEGIN RSA PRIVATE KEY-----
-    MIIEowIBAAKCAQEAubVGMMx4zvjr3yfchVYLvlrGrHk70yc8vv/XlCkbtP+fnPDC
-    mqItouRuqFD1f51YmhnEsFFiK3BSlxCFoBOQktOS0LHHVBFvNxGpNPxEsyBdIunu
-    9qZzeTl0hx5R544BaxEk4Ey37gS6IoNbEpHoLzN9haRHraw6MKKwdeqJ6qZfjM2L
-    qREIfRcbOhFjlkxw6D4AgjhDqfWe5tRMtGNlSH6UXeWtjtkqsemxmlldh/cJc7YX
-    wWOvr1plzmuPYwuuJGXJiGkDdS7xqXr+BocEinVIL2PQBLczp58kmuEKBKMoJecF
-    XjLDywbWTFW7uwaVt2mlW6pWpg1uLVZKl9P86wIDAQABAoIBADe9kFbfWLePAYVW
-    upsO67F0H8PvE6TaVyJhOnzPJfDa9TavEUpGuXn2JLzCqB1oxgpjB6WAl/2/1hpf
-    rCwTE0bu2FdptRGntgEKfQZZXemCIlJzcvV3mptdQnu3/w+IkSZo2++zN1Xq90+a
-    q8BUKSPZyahOWfFoC4NDocGS51iVmkDHaDLS0T5cdVZ7LjUdflwq6UrHyOuscwRs
-    KZoWnt4TfE0uLBnqvMSjJlhqKGyOL4QKJgUGCXsNWphZxbNvK9NGgo0RnLomfpmF
-    XY7CMk1Q2MmEa2+BcGQOj+I+fx6sbCS5chLZLFocoJGZ//+VYyXWNE+EqSXZVueg
-    qXiiSlECgYEA6vBm9clt1xrF/HqTKMsfERqWUlwS60pCurHPuzDU95wCP8Fm158E
-    f5TicQx0Wj685nfS/1TcNP+PywBbDacX7X8f2cNS0Gyf+GzzzWGj0FXb8tnMdfPW
-    P660neFhNrO6rmlZXKA+W+2Me5+fe5dsZUagVAyCzXCGbRcAKJmGjSMCgYEAylsT
-    D7VawXKWnoVkN/Pm9jzOA4aASp//HnJgfI7WMEpQ28r9FOXWiJUIQSVEkHduonDg
-    AqLZaMqJmp0THzcD1aT+2x87rrxBCRZfCmGOTJz7o+9Flb/eIVvm3r3J/Ot7eNLa
-    EURtDoG6m99KTc8syIiBqQBuwN0adP24Lfm5gZkCgYBenyIonc7SUqMo08lPJbfG
-    cLnYQ+MOxqLnhFPQ5ZLwgvHY8bDU6OOr6q/krgpyilAUVnAxi+EAq2kjbmo9rm2R
-    pqCSWPuSnB01tdPfhRKwBtSGE7goTWOd1GRELhC0MmDee+mUx6k15w+sfpaB9XOf
-    unk6QKuxyD8r0paqw2KQlwKBgCb3WrhPp+ZQdoiYDzBnGzaXhuRO5i14mdv3EnVp
-    2/z4kpGAiTOY/rLWX/yLfKSFGxzUt45KZas0NUM8tA3yvh5J43m2jfub7LofQLXz
-    Cz/diueKj8/CXrf1xoNl8JtvjRs7HxrsHkQI3zJc0SYimvESuEUe/DTPXuTgZrMT
-    v5EhAoGBAK4coXMzWrZLVurKcKU+CsNZYNf4F3x02flgoTi3OxOedGbmviZeDPqe
-    kj4pr/5aH6Fr/bsJ9ge+q/GlJqGrlA63O/d4d4FkQNZU30TBiNqSga31MGMKpkcb
-    ffzHi5exQfuI2nbob12KYvDJcd6/xF2sLTs2EY96J7MEqJXWaFMa
-    -----END RSA PRIVATE KEY-----
     `]);
     saveAs(blob, `abc.txt`);  
   }
@@ -119,7 +92,8 @@ const Deploy = (props) => {
                         {result.certificate_filename}
                       </div>
                       <div>
-                        <a className={styles.linkBtn} target="_blank" onClick={downLoadCert}>下载证书</a>  
+                        {/*<a className={styles.linkBtn} target="_blank" onClick={downLoadCert}>下载证书</a>  */}
+                        <a className={styles.linkBtn} target="_blank" href={result.certificate_file}>下载证书</a>  
                       </div>
                     </div>
                   </div>

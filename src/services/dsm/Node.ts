@@ -8,11 +8,11 @@ export async function apiTerraSearchDeployNodeGet(options?: { [key: string]: any
   return request<
     {
       disks?: {
-        disk_type?: 'NVME' | 'SAS' | 'SATA' | 'HDD';
         is_selected?: boolean;
         name?: string;
         serial_number?: string;
         size?: number;
+        type?: 'NVME' | 'SAS' | 'SATA' | 'HDD';
       }[];
       ip_address?: string;
     }[] &
@@ -28,11 +28,11 @@ export async function apiTerraSearchDeployNodeGet(options?: { [key: string]: any
 export async function apiTerraSearchDeployNode(
   body: {
     disks?: {
-      disk_type?: 'NVME' | 'SAS' | 'SATA' | 'HDD';
       is_selected?: boolean;
       name?: string;
       serial_number?: string;
       size?: number;
+      type?: 'NVME' | 'SAS' | 'SATA' | 'HDD';
     }[];
     ip_address?: string;
   }[],
